@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>course/icons/ethereum</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#7B39F4" offset="0%"></stop>
+            <stop stop-color="#BC61E0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#7B39F4" offset="0%"></stop>
+            <stop stop-color="#BC61E0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#7B39F4" offset="0%"></stop>
+            <stop stop-color="#BC61E0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#7B39F4" offset="0%"></stop>
+            <stop stop-color="#BC61E0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#7B39F4" offset="0%"></stop>
+            <stop stop-color="#BC61E0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="course/icons/ethereum" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="logomark" transform="translate(65.000000, 4.000000)" stroke-width="3">
+            <polygon id="Path-69" stroke="url(#linearGradient-1)" points="98.9871952 218 0 159.092639 98.9871952 0 198 159.092639"></polygon>
+            <line x1="98.5" y1="218" x2="98.5" y2="2" id="Path-229" stroke="url(#linearGradient-2)"></line>
+            <line x1="98.5" y1="244" x2="98.5" y2="314" id="Path-231" stroke="url(#linearGradient-3)"></line>
+            <polyline id="Path-228" stroke="url(#linearGradient-4)" points="2 159 99.7317176 115 198 159"></polyline>
+            <polygon id="Path-230" stroke="url(#linearGradient-5)" points="0 185 98.1131106 318 196 185 98 242.775295"></polygon>
+        </g>
+    </g>
+</svg>
