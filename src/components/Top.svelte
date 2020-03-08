@@ -9,17 +9,17 @@
 </svelte:head>
 
 <div class="bg">
-  <Logomark width={94} />
+  <Logomark width="94" />
   <p>
     Hi. I'm Tristan Edwards. I like to design and build cool stuff.
   </p>
 
-  <SocialIcon namespace="twitter" width={38} height={32} />
+  <SocialIcon namespace="twitter" width="38" height="32" />
   <SocialIcon namespace="dribbble" />
-  <SocialIcon namespace="github" width={44} height={44} />
+  <SocialIcon namespace="github" width="44" height="44" />
 
   <div class="caret">
-    <Caret height={20} width={38} />
+    <Caret width="38" height="20" />
   </div>
 </div>
 
@@ -30,6 +30,7 @@
     padding: 160px 0;
     position: relative;
   }
+
   .bg::before {
     content: "";
     background-image: url(/images/top_bg.png);

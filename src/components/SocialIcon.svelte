@@ -28,8 +28,8 @@
 </script>
 
 <a href="https://twitter.com/t4t5" style="width: {width}px; height: {height}px;"}>
-  <Icon width={width} height={height} />
-  <LineIcon width={width} height={height} />
+  <Icon />
+  <LineIcon />
 </a>
 
 <style>
@@ -45,6 +45,8 @@
     position: absolute;
     left: 0;
     top: 0;
+    width: inherit;
+    height: inherit;
   }
 
   a :global(> svg:last-child) {
