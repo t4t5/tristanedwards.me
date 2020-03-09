@@ -28,7 +28,7 @@
     box-shadow: 0 0 1px 0 rgba(0,0,0,0.65), 0 1px 2px 0 rgba(0,0,0,0.10);
     border-radius: 3px;
     display: inline-block;
-    margin: 0 15px;
+    margin: 15px;
     cursor: pointer;
     position: relative;
     z-index: 10;

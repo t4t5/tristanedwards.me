@@ -9,6 +9,7 @@
 <style>
   .window {
     width: 624px;
+    max-width: 100%;
     height: 383px;
     background-image: url(/images/window.png);
     background-size: contain;
