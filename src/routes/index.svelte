@@ -6,13 +6,6 @@
   import Footer from "../components/Footer.svelte"
 </script>
 
-<svelte:head>
-  <title>Tristan Edwards | Designer & Developer</title>
-  <meta
-    name="description"
-    content="Portfolio of designer & developer Tristan Edwards" />
-</svelte:head>
-
 <Top />
 <Ludu />
 <Safello />
