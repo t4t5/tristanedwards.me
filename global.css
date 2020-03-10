@@ -1,0 +1,40 @@
+@font-face {
+  font-family: ProximaNova;
+  font-weight: normal;
+  src: url(/fonts/proxima_nova_light.ttf);
+}
+
+@font-face {
+  font-family: ProximaNova;
+  font-weight: bold;
+  src: url(/fonts/proxima_nova_semibold.ttf);
+}
+
+body {
+	margin: 0;
+  font-family: ProximaNova, Helvetica Neue, sans-serif;
+	font-size: 27px;
+  color: white;
+  text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: normal;
+}
+
+p {
+  margin: 0;
+  padding: 10px 20px;
+}
+
+a {
+	color: inherit;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 20px;
+  }
+}
