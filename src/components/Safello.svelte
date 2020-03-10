@@ -11,9 +11,9 @@
   </p>
 
   <div class="windows">
-    <Window image="/images/safello_screenshots/buy.png" pos="left" />
-    <Window image="/images/safello_screenshots/landing.png" />
-    <Window image="/images/safello_screenshots/bitcoinse.png" pos="right" />
+    <Window image="/images/safello_screenshots/buy.jpg" pos="left" />
+    <Window image="/images/safello_screenshots/landing.jpg" />
+    <Window image="/images/safello_screenshots/bitcoinse.jpg" pos="right" />
   </div>
 </div>
 
