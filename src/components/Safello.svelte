@@ -4,10 +4,16 @@
 </script>
 
 <div class="bg">
-  <SafelloLogomark width="46" height="71" />
+  <a href="https://safello.com" target="_blank">
+    <SafelloLogomark width="46" height="71" />
+  </a>
 
   <p>
-    I've worked on making <span>Safello</span> a key player in the European Bitcoin industry.
+    I've worked on making
+    <a href="https://safello.com" target="_blank">
+      Safello
+    </a>
+    a key player in the European Bitcoin industry.
   </p>
 
   <div class="windows">
@@ -31,7 +37,7 @@
     margin-bottom: 50px;
   }
 
-  p span {
+  p a {
     color: #56BAA5;
     font-weight: bold;
   }

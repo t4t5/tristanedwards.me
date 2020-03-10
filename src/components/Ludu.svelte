@@ -6,14 +6,16 @@
 </script>
 
 <div class="bg">
-  <LuduLogomark width="74" height="42" />
+  <a href="https://ludu.co" target="_blank">
+    <LuduLogomark width="74" height="42" />
+  </a>
 
   <p>
     I aspire to reinvent education with
-    <span class="ludu-logo">
+    <a href="https://ludu.co" target="_blank" class="ludu-logo">
       Ludu
       <LuduLogotype width="86" height="46" />
-    </span>
+    </a>
   </p>
 
   <p>
@@ -56,6 +58,10 @@
     bottom: 0;
     left: 0;
     right: 0;
+  }
+
+  .bg * {
+    position: relative;
   }
 
   .ludu-logo {
