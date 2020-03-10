@@ -64,4 +64,14 @@
       bottom: 10px;
     }
   }
+
+  @media (max-width: 600px) {
+    p {
+      margin-top: 60px;
+    }
+
+    .bg {
+      padding: 100px 0;
+    }
+  }
 </style>

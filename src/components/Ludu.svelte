@@ -60,11 +60,29 @@
 
   .ludu-logo {
     font-size: 0;
+    margin-left: 5px;
+    display: inline-block;
+    bottom: -3px;
+    position: relative;
   }
 
   .courses {
     text-align: center;
     margin-top: 80px;
     padding-bottom: 40px;
+  }
+
+  @media (max-width: 600px) {
+    .ludu-logo {
+      margin-top: 10px;
+    }
+
+    p {
+      margin-top: 20px;
+    }
+
+    .courses {
+      margin-top: 20px;
+    }
   }
 </style>
