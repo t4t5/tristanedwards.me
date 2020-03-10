@@ -3,7 +3,7 @@
   export let color
 </script>
 
-<a href={href} target="_blank" style={`background-color: ${color}`}>
+<a {href} target="_blank" style={`background-color: ${color}`}>
   <slot />
 </a>
 

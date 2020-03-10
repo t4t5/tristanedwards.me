@@ -6,9 +6,9 @@
 <div class="window" data-pos={pos}>
   <header>
     <ul class="traffic-lights">
-      <li class="light red"></li>
-      <li class="light yellow"></li>
-      <li class="light green"></li>
+      <li class="light red" />
+      <li class="light yellow" />
+      <li class="light green" />
     </ul>
   </header>
 
@@ -17,8 +17,9 @@
 
 <style>
   .window {
-    background: #FFFFFF;
-    box-shadow: 0 3px 15px 0 rgba(0,0,0,0.04), 0 1px 4px 0 rgba(0,0,0,0.18);
+    background: #ffffff;
+    box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.04),
+      0 1px 4px 0 rgba(0, 0, 0, 0.18);
     border-radius: 4px;
     width: 624px;
     height: 383px;
@@ -51,11 +52,11 @@
   }
 
   header {
-    background: #F2F2F2;
-    box-shadow: 0 1px 0 0 rgba(0,0,0,0.10);
+    background: #f2f2f2;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1);
     font-size: 16px;
     text-align: center;
-    color: rgba(0,0,0,0.54);
+    color: rgba(0, 0, 0, 0.54);
     position: relative;
     padding: 10px 0;
   }
@@ -80,15 +81,15 @@
   }
 
   .red {
-    background-color: #FB6B58;
+    background-color: #fb6b58;
   }
 
   .yellow {
-    background-color: #FFD50A;
+    background-color: #ffd50a;
   }
 
   .green {
-    background-color: #6ECA3A;
+    background-color: #6eca3a;
   }
 
   .screen {

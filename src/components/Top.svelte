@@ -1,7 +1,7 @@
 <script>
-  import Logomark from '../icons/te_logomark.svg'
-  import SocialIcon from './SocialIcon.svelte'
-  import Caret from '../icons/caret.svg'
+  import Logomark from "../icons/te_logomark.svg"
+  import SocialIcon from "./SocialIcon.svelte"
+  import Caret from "../icons/caret.svg"
 </script>
 
 <svelte:head>
@@ -10,9 +10,7 @@
 
 <div class="bg">
   <Logomark width="94" />
-  <p>
-    Hi. I'm Tristan Edwards. I like to design and build cool stuff.
-  </p>
+  <p>Hi. I'm Tristan Edwards. I like to design and build cool stuff.</p>
 
   <SocialIcon namespace="twitter" width="38" height="32" />
   <SocialIcon namespace="dribbble" />

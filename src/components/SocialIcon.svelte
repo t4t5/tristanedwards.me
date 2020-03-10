@@ -3,13 +3,13 @@
   export let width = 42
   export let height = 42
 
-  import Twitter from '../icons/social/twitter.svg'
-  import Dribbble from '../icons/social/dribbble.svg'
-  import Github from '../icons/social/github.svg'
+  import Twitter from "../icons/social/twitter.svg"
+  import Dribbble from "../icons/social/dribbble.svg"
+  import Github from "../icons/social/github.svg"
 
-  import TwitterLines from '../icons/social/twitter_lines.svg'
-  import DribbbleLines from '../icons/social/dribbble_lines.svg'
-  import GithubLines from '../icons/social/github_lines.svg'
+  import TwitterLines from "../icons/social/twitter_lines.svg"
+  import DribbbleLines from "../icons/social/dribbble_lines.svg"
+  import GithubLines from "../icons/social/github_lines.svg"
 
   const icons = {
     twitter: Twitter,
@@ -27,7 +27,10 @@
   const LineIcon = lineIcons[namespace]
 </script>
 
-<a href="https://twitter.com/t4t5" style="width: {width}px; height: {height}px;"}>
+<a
+  href="https://twitter.com/t4t5"
+  style="width: {width}px; height: {height}px;"
+  }>
   <Icon />
   <LineIcon />
 </a>

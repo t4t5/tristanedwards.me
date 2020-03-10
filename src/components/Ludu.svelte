@@ -1,8 +1,8 @@
 <script>
-  import LuduLogomark from '../icons/ludu_logomark.svg'
-  import LuduLogotype from '../icons/ludu_logotype.svg'
+  import LuduLogomark from "../icons/ludu_logomark.svg"
+  import LuduLogotype from "../icons/ludu_logotype.svg"
 
-  import CourseCard from './CourseCard.svelte'
+  import CourseCard from "./CourseCard.svelte"
 </script>
 
 <div class="bg">
@@ -18,9 +18,7 @@
     </a>
   </p>
 
-  <p>
-    Check out some of my online courses there!
-  </p>
+  <p>Check out some of my online courses there!</p>
 
   <div class="courses">
     <CourseCard
@@ -28,23 +26,21 @@
       namespace="phoenix"
       color="purple"
       title="Discover Elixir & Phoenix"
-      desc="Functional programming made fun & simple"
-    />
+      desc="Functional programming made fun & simple" />
 
     <CourseCard
       href="https://www.ludu.co/course/ethereum"
       namespace="ethereum"
       color="dark"
       title="Discover Ethereum & Solidity"
-      desc="Unleash the power of blockchain applications"
-    />
+      desc="Unleash the power of blockchain applications" />
   </div>
 </div>
 
 <style>
   .bg {
     padding-top: 45px;
-    background-image: linear-gradient(180deg, #94C270 0%, #38AB6D 100%);
+    background-image: linear-gradient(180deg, #94c270 0%, #38ab6d 100%);
     position: relative;
   }
 

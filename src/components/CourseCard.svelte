@@ -6,18 +6,16 @@
   export let desc = ""
 </script>
 
-<a class="card" href={href} target="_blank">
+<a class="card" {href} target="_blank">
   <span class="cover" data-color={color}>
-    <span class="course-icon" style={`background-image: url(/images/course_icons/${namespace}.png)`} />
+    <span
+      class="course-icon"
+      style={`background-image: url(/images/course_icons/${namespace}.png)`} />
   </span>
 
-  <h6>
-    {title}
-  </h6>
+  <h6>{title}</h6>
 
-  <p>
-    {desc}
-  </p>
+  <p>{desc}</p>
 </a>
 
 <style>
@@ -25,7 +23,7 @@
     width: 265px;
     height: 310px;
     background: white;
-    box-shadow: 0 0 1px 0 rgba(0,0,0,0.65), 0 1px 2px 0 rgba(0,0,0,0.10);
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.65), 0 1px 2px 0 rgba(0, 0, 0, 0.1);
     border-radius: 3px;
     display: inline-block;
     margin: 15px;
@@ -36,12 +34,12 @@
   }
 
   .card:hover {
-    box-shadow: 0 0 1px 0 rgba(0,0,0,0.65), 0 0 30px #00000029;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.65), 0 0 30px #00000029;
     transform: scale(1.02);
   }
 
   .cover {
-    background-image: linear-gradient(164deg, #9065FB 0%, #7165FB 100%);
+    background-image: linear-gradient(164deg, #9065fb 0%, #7165fb 100%);
     height: 157px;
     display: flex;
     justify-content: center;
@@ -49,7 +47,7 @@
   }
 
   .cover[data-color="dark"] {
-    background-image: linear-gradient(164deg, #414780 0%, #453B5C 100%);
+    background-image: linear-gradient(164deg, #414780 0%, #453b5c 100%);
   }
 
   .course-icon {
@@ -63,13 +61,13 @@
   h6 {
     font-weight: bold;
     font-size: 18px;
-    color: rgba(0,0,0,0.80);
+    color: rgba(0, 0, 0, 0.8);
     margin-top: 25px;
     margin-bottom: 15px;
   }
 
   p {
     font-size: 15px;
-    color: rgba(0,0,0,0.65);
+    color: rgba(0, 0, 0, 0.65);
   }
 </style>

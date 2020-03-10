@@ -1,14 +1,16 @@
 <script>
-  import Top from '../components/Top.svelte'
-  import Ludu from '../components/Ludu.svelte'
-  import Safello from '../components/Safello.svelte'
-  import Freebies from '../components/Freebies.svelte'
-  import Footer from '../components/Footer.svelte'
+  import Top from "../components/Top.svelte"
+  import Ludu from "../components/Ludu.svelte"
+  import Safello from "../components/Safello.svelte"
+  import Freebies from "../components/Freebies.svelte"
+  import Footer from "../components/Footer.svelte"
 </script>
 
 <svelte:head>
-	<title>Tristan Edwards | Designer & Developer</title>
-  <meta name="description" content="Portfolio of designer & developer Tristan Edwards"/>
+  <title>Tristan Edwards | Designer & Developer</title>
+  <meta
+    name="description"
+    content="Portfolio of designer & developer Tristan Edwards" />
 </svelte:head>
 
 <Top />

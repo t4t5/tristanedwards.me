@@ -1,6 +1,6 @@
 <script>
-  import SafelloLogomark from '../icons/safello_logomark.svg'
-  import Window from './Window.svelte'
+  import SafelloLogomark from "../icons/safello_logomark.svg"
+  import Window from "./Window.svelte"
 </script>
 
 <div class="bg">
@@ -10,9 +10,7 @@
 
   <p>
     I've worked on making
-    <a href="https://safello.com" target="_blank">
-      Safello
-    </a>
+    <a href="https://safello.com" target="_blank">Safello</a>
     a key player in the European Bitcoin industry.
   </p>
 
@@ -25,20 +23,20 @@
 
 <style>
   .bg {
-    background-image: linear-gradient(180deg, #EFF7FA 0%, #ECF2F7 100%);
+    background-image: linear-gradient(180deg, #eff7fa 0%, #ecf2f7 100%);
     padding-top: 50px;
     overflow: hidden;
   }
 
   p {
-    color: #819AAB;
+    color: #819aab;
     max-width: 590px;
     margin: 30px auto;
     margin-bottom: 50px;
   }
 
   p a {
-    color: #56BAA5;
+    color: #56baa5;
     font-weight: bold;
   }
 
