@@ -1,31 +1,122 @@
 <script>
   export let image
+  export let pos = "center"
 </script>
 
-<div class="window">
+<div class="window" data-pos={pos}>
+  <header>
+    <ul class="traffic-lights">
+      <li class="light red"></li>
+      <li class="light yellow"></li>
+      <li class="light green"></li>
+    </ul>
+  </header>
+
   <div class="screen" style={`background-image: url(${image})`} />
 </div>
 
 <style>
   .window {
+    background: #FFFFFF;
+    box-shadow: 0 3px 15px 0 rgba(0,0,0,0.04), 0 1px 4px 0 rgba(0,0,0,0.18);
+    border-radius: 4px;
     width: 624px;
-    max-width: 100%;
     height: 383px;
-    background-image: url(/images/window.png);
-    background-size: contain;
-    background-position: bottom center;
-    background-repeat: no-repeat;
-    margin: 0 auto;
+    max-width: 100%;
     position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    box-sizing: border-box;
+    overflow: hidden;
+    max-width: calc(100% - 20px);
+    margin-bottom: -10px;
+  }
+
+  .window[data-pos="left"] {
+    position: absolute;
+    transform: perspective(1000px) rotateY(-20deg);
+    left: 160px;
+    top: 30px;
+  }
+
+  .window[data-pos="right"] {
+    position: absolute;
+    transform: perspective(1000px) rotateY(20deg);
+    right: 160px;
+    top: 30px;
+  }
+
+  .window[data-pos="center"] {
+    z-index: 1;
+  }
+
+  header {
+    background: #F2F2F2;
+    box-shadow: 0 1px 0 0 rgba(0,0,0,0.10);
+    font-size: 16px;
+    text-align: center;
+    color: rgba(0,0,0,0.54);
+    position: relative;
+    padding: 10px 0;
+  }
+
+  .traffic-lights {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .light {
+    width: 10px;
+    height: 10px;
+    background-color: gray;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 1px;
+  }
+
+  .red {
+    background-color: #FB6B58;
+  }
+
+  .yellow {
+    background-color: #FFD50A;
+  }
+
+  .green {
+    background-color: #6ECA3A;
   }
 
   .screen {
     position: absolute;
-    top: 40px;
-    left: 1px;
-    right: 1px;
+    top: 21px;
+    left: 0;
+    right: 0;
     bottom: 0;
     background-size: cover;
     background-position: top center;
+  }
+
+  @media (max-width: 1000px) {
+    .window[data-pos="left"],
+    .window[data-pos="right"] {
+      display: none;
+    }
+  }
+
+  @media (max-width: 570px) {
+    .window {
+      height: 300px;
+    }
+  }
+
+  @media (max-width: 450px) {
+    .window {
+      height: 250px;
+    }
   }
 </style>
