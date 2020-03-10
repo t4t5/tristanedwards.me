@@ -4,10 +4,6 @@
   import Caret from "../icons/caret.svg"
 </script>
 
-<svelte:head>
-  <link rel="stylesheet" href="/global.css" />
-</svelte:head>
-
 <div class="bg">
   <Logomark width="94" />
   <p>Hi. I'm Tristan Edwards. I like to design and build cool stuff.</p>
