@@ -2,6 +2,7 @@
   export let namespace
   export let width = 42
   export let height = 42
+  export let href
 
   import Twitter from "../icons/social/twitter.svg"
   import Dribbble from "../icons/social/dribbble.svg"
@@ -27,10 +28,7 @@
   const LineIcon = lineIcons[namespace]
 </script>
 
-<a
-  href="https://twitter.com/t4t5"
-  style="width: {width}px; height: {height}px;"
-  }>
+<a {href} style="width: {width}px; height: {height}px;" }>
   <Icon />
   <LineIcon />
 </a>

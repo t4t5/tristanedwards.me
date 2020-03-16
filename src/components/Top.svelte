@@ -8,9 +8,17 @@
   <Logomark width="94" />
   <p>Hi. I'm Tristan Edwards. I like to design and build cool stuff.</p>
 
-  <SocialIcon namespace="twitter" width="38" height="32" />
-  <SocialIcon namespace="dribbble" />
-  <SocialIcon namespace="github" width="44" height="44" />
+  <SocialIcon
+    namespace="twitter"
+    href="https://twitter.com/t4t5"
+    width="38"
+    height="32" />
+  <SocialIcon namespace="dribbble" href="https://dribbble.com/tristanedwards" />
+  <SocialIcon
+    namespace="github"
+    href="https://github.com/t4t5"
+    width="44"
+    height="44" />
 
   <div class="caret">
     <Caret width="38" height="20" />
