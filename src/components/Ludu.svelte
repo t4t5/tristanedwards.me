@@ -79,7 +79,7 @@
       margin-top: 10px;
     }
 
-    p {
+    p:first-of-type {
       margin-top: 20px;
     }
 
