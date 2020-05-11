@@ -6,7 +6,7 @@
 
 <div class="bg">
   <Logomark width="94" />
-  <p>Hi. I'm Tristan Edwards. I like to design and build cool stuff.</p>
+  <p>Hi! I'm Tristan Edwards. I like to design and build cool stuff.</p>
 
   <SocialIcon
     namespace="twitter"
