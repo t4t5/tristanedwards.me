@@ -26,9 +26,11 @@
 
   const Icon = icons[namespace]
   const LineIcon = lineIcons[namespace]
+
+  export const style = `width: ${width}px; height: ${height}px;`
 </script>
 
-<a {href} style="width: {width}px; height: {height}px;" }>
+<a {href} {style}>
   <Icon />
   <LineIcon />
 </a>
