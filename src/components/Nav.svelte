@@ -50,4 +50,19 @@
   nav[data-dark] a[data-active="true"]::after {
     background-color: black;
   }
+
+  @media (max-width: 600px) {
+    nav {
+      text-align: center;
+      left: 50%;
+      transform: translate(-50%);
+      white-space: nowrap;
+      top: 20px;
+      font-size: 14px;
+    }
+
+    a[data-active="true"]::after {
+      bottom: -5px;
+    }
+  }
 </style>

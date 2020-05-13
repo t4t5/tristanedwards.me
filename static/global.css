@@ -34,6 +34,11 @@ a {
   text-decoration: none;
 }
 
+#sapper {
+  max-width: 100%;
+  overflow: hidden;
+}
+
 @media (max-width: 600px) {
   body {
     font-size: 20px;

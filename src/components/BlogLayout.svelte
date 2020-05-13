@@ -7,12 +7,45 @@
   export let date
   export let url
   export let snippet
+  export let desc
 
   const formattedDate = moment(date).format("MMM D, YYYY")
 </script>
 
 <svelte:head>
   <link rel="stylesheet" href="/dracula.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet" />
+
+  {#if !snippet}
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={desc} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={desc} />
+
+    {#if cover}
+      <meta
+        property="og:image"
+        content={`https://tristanedwards.me/${cover}`} />
+    {/if}
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={desc} />
+
+    {#if cover}
+      <meta
+        property="twitter:image"
+        content={`https://tristanedwards.me/${cover}`} />
+    {/if}
+  {/if}
 </svelte:head>
 
 {#if !snippet}
@@ -35,7 +68,7 @@
     <h1>{title}</h1>
   {/if}
 
-  <img src={cover} alt="Cover picture" />
+  <img src={cover} class={!snippet && 'wide'} alt="Cover picture" />
 
   <div class="content">
     <slot />
@@ -85,7 +118,7 @@
   }
 
   .blog {
-    font-family: Merriweather;
+    font-family: "Merriweather", serif;
     font-size: 18px;
     color: rgba(0, 0, 0, 0.85);
     line-height: 35px;
@@ -99,6 +132,7 @@
   .title {
     font-size: 36px;
     color: rgba(0, 0, 0, 0.9);
+    line-height: 45px;
   }
 
   a.title:hover {
@@ -182,11 +216,6 @@
     color: #535353;
   }
 
-  :global(#sapper) {
-    max-width: 100%;
-    overflow: hidden;
-  }
-
   .follow-box {
     margin-top: 40px;
     display: flex;
@@ -206,5 +235,37 @@
 
   .follow-box a:hover {
     text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .blog {
+      font-size: 15px;
+      line-height: 26px;
+    }
+
+    h1,
+    .title {
+      font-size: 27px;
+      line-height: 35px;
+    }
+
+    .blog :global(img + em) {
+      font-size: 13px;
+    }
+
+    .blog :global(pre) {
+      font-size: 13px;
+      line-height: 21px;
+    }
+
+    .follow-box {
+      flex-direction: column;
+    }
+
+    .follow-box .avatar {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 10px;
+    }
   }
 </style>
