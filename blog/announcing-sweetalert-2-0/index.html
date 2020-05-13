@@ -1,0 +1,55 @@
+<!doctype html> <html lang=en> <head> <meta charset=utf-8> <meta content="width=device-width,initial-scale=1" name=viewport> <base href=/ > <link href=/global.css rel=stylesheet> <link href=client/main.2094326193.css rel=stylesheet><link href=client/client.789e8479.css rel=stylesheet><link href=client/Nav.a71dcc29.css rel=stylesheet><link href=client/BlogLayout.09e3deb4.css rel=stylesheet> <noscript id=sapper-head-start></noscript><title>Announcing SweetAlert 2.0 🎉</title><link href=/dracula.css rel=stylesheet><link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel=stylesheet> <meta content="Announcing SweetAlert 2.0 🎉" name=title> <meta content="SweetAlert is a little side project that I released in 2014 in order to help developers implement dialogs that don’t suck in their web apps. When I first released it, I had no expectations whatsoever, and frankly did it mostly to spice up my boring GitHub profile." name=description> <meta content=website property=og:type> <meta content="Announcing SweetAlert 2.0 🎉" property=og:title> <meta content="SweetAlert is a little side project that I released in 2014 in order to help developers implement dialogs that don’t suck in their web apps. When I first released it, I had no expectations whatsoever, and frankly did it mostly to spice up my boring GitHub profile." property=og:description> <meta content=https://tristanedwards.me//images/blog/sweetalert/cover.png property=og:image> <meta content=summary_large_image property=twitter:card> <meta content="Announcing SweetAlert 2.0 🎉" property=twitter:title> <meta content="SweetAlert is a little side project that I released in 2014 in order to help developers implement dialogs that don’t suck in their web apps. When I first released it, I had no expectations whatsoever, and frankly did it mostly to spice up my boring GitHub profile." property=twitter:description> <meta content=https://tristanedwards.me//images/blog/sweetalert/cover.png property=twitter:image><noscript id=sapper-head-end></noscript> </head> <body> <div id=sapper> <nav class=svelte-1c4clhu data-dark><a href=/ class=svelte-1c4clhu data-active=false>Home</a> <a href=/blog class=svelte-1c4clhu data-active>Blog</a> </nav> <div class="svelte-rprbgk blog"><header class=svelte-rprbgk><img alt="Tristan Edwards" src=/images/tristan.jpg class="svelte-rprbgk avatar"> <address class=svelte-rprbgk><a href=/blog class=svelte-rprbgk rel=author>Tristan Edwards</a></address> <span class="svelte-rprbgk divider">/</span> <time datetime=2017-09-07T00:00:00.000Z pubdate>Sep 7, 2017</time></header> <h1 class=svelte-rprbgk>Announcing SweetAlert 2.0 🎉</h1> <img alt="Cover picture" src=/images/blog/sweetalert/cover.png class="svelte-rprbgk wide"> <div class="svelte-rprbgk content"><p><a href=https://sweetalert.js.org>SweetAlert</a> is a little side project that I released in 2014 in order to help developers implement dialogs that don’t suck in their web apps. When I first released it, I had no expectations whatsoever, and frankly did it mostly to spice up my boring GitHub profile.</p> <p><img alt="SweetAlert 1.0 animation" src=/images/blog/sweetalert/1-0.gif> <em>The famous animation that caught a lot of people’s attention</em></p> <p>Three years and over 16 000 GitHub stars later, SweetAlert is no longer a little pet project, but has grown to become an indispensable tool for thousands of websites all around the world.</p> <p>Things have changed dramatically in the JavaScript ecosystem since its first release however. Bower and templating languages no longer rule the world, and ES2015/ES2016/ES2017 is becoming mainstream. A major revamp of the library is long overdue.</p> <p><img alt="SweetAlert Logo" src=/images/blog/sweetalert/logo.png></p> <p>With SweetAlert 2.0, I hope that the library will continue to be useful for another 3 years. Not only has the library been rewritten from the ground up using <a href=https://www.typescriptlang.org>TypeScript</a> and <a href=https://github.com/postcss/postcss>PostCSS</a>, but it also comes with some awesome new functionality.</p> <h2>So what’s new?</h2> <p>By far the most requested feature in the original library was the the ability to cutomise SweetAlerts with extra buttons and content. For this, I looked into the most common alerts used on major websites like Facebook and Pinterest for inspiration.</p> <img alt="SweetAlert alternatives" src=/images/blog/sweetalert/alts.png class=wide> <p>Rather than bloating the standard library with lots of app-specific options, SweetAlert 2.0 can render all of these thanks to its new <code>content</code> parameter, which lets you pass in a custom DOM node. This DOM node can be designed either from scratch in pure JavaScript, or with the help of one of your favourite rendering libraries, like React or Vue.</p> <pre><code class=language-javascript><span class=hljs-comment>// A React component...</span>
+<span class=hljs-keyword>const</span> List = <span class=hljs-function><span class=hljs-params>()</span> =></span> (
+  <span class=xml><span class=hljs-tag>&lt;<span class=hljs-name>ul</span>></span>
+    <span class=hljs-tag>&lt;<span class=hljs-name>li</span>></span>Item 1<span class=hljs-tag>&lt;/<span class=hljs-name>li</span>></span>
+    <span class=hljs-tag>&lt;<span class=hljs-name>li</span>></span>Item 2<span class=hljs-tag>&lt;/<span class=hljs-name>li</span>></span>
+  <span class=hljs-tag>&lt;/<span class=hljs-name>ul</span>></span></span>
+)
+
+<span class=hljs-comment>// Render it as a DOM node...</span>
+<span class=hljs-keyword>const</span> wrapper = <span class=hljs-built_in>document</span>.createElement()
+ReactDOM.render(<span class=xml><span class=hljs-tag>&lt;<span class=hljs-name>List</span> /></span></span>, wrapper)
+<span class=hljs-keyword>const</span> listEl = wrapper.firstChild
+
+<span class=hljs-comment>// And pass the DOM node to SweetAlert!</span>
+swal({
+  <span class=hljs-attr>text</span>: <span class=hljs-string>"Here's a list:"</span>,
+  <span class=hljs-attr>content</span>: listEl,
+})
+</code></pre> <p>SweetAlert 2.0 is also completely <em>promise-based</em>. This means you can get some seriously cool flows, especially if you combine it with <code>async</code>+<code>await</code>.</p> <pre><code class=language-javascript><span class=hljs-keyword>const</span> deleteFile = <span class=hljs-keyword>async</span> () => {
+  <span class=hljs-comment>// Wait for the user to press a button...</span>
+  <span class=hljs-keyword>const</span> shouldDelete = <span class=hljs-keyword>await</span> swal(<span class=hljs-string>"Delete file?"</span>, <span class=hljs-string>"Are you sure that you want to delete this file?"</span>, <span class=hljs-string>"warning"</span>);
+
+  <span class=hljs-keyword>if</span> (shouldDelete) {
+    <span class=hljs-comment>// Code to actually delete file goes here</span>
+    swal(<span class=hljs-string>"Poof!"</span>, <span class=hljs-string>"Your file has been deleted!"</span>, <span class=hljs-string>"success"</span>);
+  }
+}
+</code></pre> <p>Overall, the API has been revamped to be as simple as possible and gracefully upgradeable. Take a look at this example of how you can change the number of buttons in an alert:</p> <pre><code class=language-javascript><span class=hljs-comment>// No buttons:</span>
+swal({
+  <span class=hljs-attr>text</span>: <span class=hljs-string>"This modal has no buttons!"</span>,
+  <span class=hljs-attr>buttons</span>: <span class=hljs-literal>false</span>,
+});
+
+<span class=hljs-comment>// 1 button:</span>
+swal({
+  <span class=hljs-attr>text</span>: <span class=hljs-string>"Here’s a modal with one button!"</span>,
+  <span class=hljs-attr>button</span>: <span class=hljs-string>"Click me!"</span>,
+});
+
+<span class=hljs-comment>// 2 buttons:</span>
+swal({
+  <span class=hljs-attr>text</span>: <span class=hljs-string>"Two buttons…"</span>,
+  <span class=hljs-attr>buttons</span>: [<span class=hljs-string>"Cancel"</span>, <span class=hljs-string>"Click me!"</span>],
+});
+
+<span class=hljs-comment>// 3 buttons:</span>
+swal({
+  <span class=hljs-attr>text</span>: <span class=hljs-string>"Even three buttons, each with their own promise value!"</span>,
+  <span class=hljs-attr>buttons</span>: {
+    <span class=hljs-attr>cancel</span>: <span class=hljs-string>"Cancel"</span>,
+    <span class=hljs-attr>confirm</span>: <span class=hljs-string>"Click me!"</span>,
+    <span class=hljs-attr>hello</span>: <span class=hljs-string>"Say hello!"</span>,
+  },
+});
+</code></pre> <p>There’s a lot more stuff packed in, but rather than go through it all here, I suggest you head over to the <a href=https://sweetalert.js.org>shiny new SweetAlert website</a>. A big thank you to <a href=https://github.com/t4t5/sweetalert/graphs/contributors>everyone who’s helped contribute</a> to the library! Here’s to the next three years! 🍻</p> </div> <div class="svelte-rprbgk follow-box"><img alt="Tristan Edwards" src=/images/tristan.jpg class="svelte-rprbgk avatar"> <i>Don’t want to miss any future tutorials or updates on the things I’m building? <a href=https://twitter.com/t4t5 class=svelte-rprbgk target=_blank>Follow me on Twitter! </a></i></div> </div></div> <script>__SAPPER__={baseUrl:"",preloaded:[void 0,null,{}]};if('serviceWorker' in navigator)navigator.serviceWorker.register('/service-worker.js');(function(){try{eval("async function x(){}");var main="/client/client.789e8479.js"}catch(e){main="/client/legacy/client.2c314451.js"};var s=document.createElement("script");try{new Function("if(0)import('')")();s.src=main;s.type="module";s.crossOrigin="use-credentials";}catch(e){s.src="/client/shimport@1.0.1.js";s.setAttribute("data-main",main);}document.head.appendChild(s);}());</script> 

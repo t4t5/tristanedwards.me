@@ -20,6 +20,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
+  padding: 0 20px;
   font-weight: normal;
 }
 
@@ -31,6 +32,11 @@ p {
 a {
 	color: inherit;
   text-decoration: none;
+}
+
+#sapper {
+  max-width: 100%;
+  overflow: hidden;
 }
 
 @media (max-width: 600px) {

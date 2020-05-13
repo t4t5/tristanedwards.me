@@ -1,0 +1,345 @@
+<!doctype html> <html lang=en> <head> <meta charset=utf-8> <meta content="width=device-width,initial-scale=1" name=viewport> <base href=/ > <link href=/global.css rel=stylesheet> <link href=client/main.2094326193.css rel=stylesheet><link href=client/client.789e8479.css rel=stylesheet><link href=client/Nav.a71dcc29.css rel=stylesheet><link href=client/BlogLayout.09e3deb4.css rel=stylesheet> <noscript id=sapper-head-start></noscript><title>Why I’m excited about GlimmerJS</title><link href=/dracula.css rel=stylesheet><link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel=stylesheet> <meta content="Why I’m excited about GlimmerJS" name=title> <meta content="I’ve just come back from EmberConf in Portland, and besides getting to know the community and making some awesome new friends, the GlimmerJS announcement is what really caught my eye." name=description> <meta content=website property=og:type> <meta content="Why I’m excited about GlimmerJS" property=og:title> <meta content="I’ve just come back from EmberConf in Portland, and besides getting to know the community and making some awesome new friends, the GlimmerJS announcement is what really caught my eye." property=og:description> <meta content=https://tristanedwards.me//images/blog/glimmer/cover.png property=og:image> <meta content=summary_large_image property=twitter:card> <meta content="Why I’m excited about GlimmerJS" property=twitter:title> <meta content="I’ve just come back from EmberConf in Portland, and besides getting to know the community and making some awesome new friends, the GlimmerJS announcement is what really caught my eye." property=twitter:description> <meta content=https://tristanedwards.me//images/blog/glimmer/cover.png property=twitter:image><noscript id=sapper-head-end></noscript> </head> <body> <div id=sapper> <nav class=svelte-1c4clhu data-dark><a href=/ class=svelte-1c4clhu data-active=false>Home</a> <a href=/blog class=svelte-1c4clhu data-active>Blog</a> </nav> <div class="svelte-rprbgk blog"><header class=svelte-rprbgk><img alt="Tristan Edwards" src=/images/tristan.jpg class="svelte-rprbgk avatar"> <address class=svelte-rprbgk><a href=/blog class=svelte-rprbgk rel=author>Tristan Edwards</a></address> <span class="svelte-rprbgk divider">/</span> <time datetime=2017-04-03T00:00:00.000Z pubdate>Apr 3, 2017</time></header> <h1 class=svelte-rprbgk>Why I’m excited about GlimmerJS</h1> <img alt="Cover picture" src=/images/blog/glimmer/cover.png class="svelte-rprbgk wide"> <div class="svelte-rprbgk content"><p>I’ve just come back from <em>EmberConf</em> in Portland, and besides getting to know the community and making some awesome new friends, the <a href=https://glimmerjs.com>GlimmerJS announcement</a> is what really caught my eye.</p> <p><img alt="Rowing Tomster" src=/images/blog/glimmer/rowing-tomster.png></p> <p>Some of you might know that I’ve been a big fan of Ember for a long time. Like many others, I was initially put off by the high learning curve, until I eventually learned to embrace the framework’s conventions, and became a better developer in the process.</p> <p>Even though I’ve flirted with basically all other major web frameworks since then, I still choose Ember most of the time when I have to build an ambitious web application. And why wouldn’t I? The CLI is fantastic, the Glimmer engine is now fast, and getting server-side rendering is literally just an <code>ember install</code> away thanks to <a href=https://ember-fastboot.com>FastBoot</a>.</p> <p>Despite all this, it’s no secret that lighter libraries like Vue and React have stolen the show in recent years. Why? Well, in addition to introducing some awesome new concepts like the virtual DOM and a one-way data flow, React also made it significantly easier to migrate your existing Rails/Laravel/Django front-end piece by piece.</p> <p>This is crucial. Companies usually aren’t too keen on rewriting software from scratch, and Ember had no way of letting developers dip their feet into the water before diving in. Until now.</p> <p><img alt="Bundle size of Octane compared to other frameworks" src=/images/blog/glimmer/bundlesize.png> <em>Bundle size of different libraries + frameworks (minified + gzipped). Based on my own independent research.</em></p> <p>With GlimmerJS, you can finally get the benefits of Ember’s rendering engine and CLI, without having to buy into the whole ecosystem. The project is new, and therefore obviously still a little rough around the edges, but based on what I’ve seen so far, I’m impressed.</p> <blockquote><p>Enough talking, show me the code!</blockquote> <p>Let’s see how we can spice up any traditional web application with some Glimmer components! I’m going to start off with an extremely simple website: no Babel, no ES6, just plain HTML with script tags and links to CSS.</p> <p>We’ll call our app <code>todo-app</code> since it’s going to contain a todo-list (yeah I know, not a very original concept…) If you ever get stuck while following along, you can check out the project’s <a href=https://github.com/t4t5/todoapp-glimmer>GitHub repo</a>.</p> <pre><code class=language-bash>$ mkdir todo-app && <span class=hljs-built_in>cd</span> todo-app && touch index.html
+</code></pre> <p>Here’s the inside of <code>index.html</code>:</p> <pre><code class=language-html><span class=hljs-tag>&lt;<span class=hljs-name>html</span>></span>
+ <span class=hljs-tag>&lt;<span class=hljs-name>head</span>></span>
+   <span class=hljs-tag>&lt;<span class=hljs-name>title</span>></span>Todo app<span class=hljs-tag>&lt;/<span class=hljs-name>title</span>></span>
+ <span class=hljs-tag>&lt;/<span class=hljs-name>head</span>></span>
+
+ <span class=hljs-tag>&lt;<span class=hljs-name>body</span>></span>
+   <span class=hljs-tag>&lt;<span class=hljs-name>h1</span>></span>Hello world!<span class=hljs-tag>&lt;/<span class=hljs-name>h1</span>></span>
+ <span class=hljs-tag>&lt;/<span class=hljs-name>body</span>></span>
+<span class=hljs-tag>&lt;/<span class=hljs-name>html</span>></span></code></pre> <p><img alt="Hello World screenshot" src=/images/blog/glimmer/helloworld-1.png></p> <p>Alright, let’s create an interactive <code>todo-list</code> web component for this page! We’ll first create a <code>components</code> folder inside our project, where all our future Glimmer components will live:</p> <pre><code class=language-bash>$ mkdir components && <span class=hljs-built_in>cd</span> components
+</code></pre> <p>Using the latest Ember CLI (installed globally with Yarn), we now simply run this command:</p> <pre><code class=language-bash>$ ember new todo-list -b @glimmer/blueprint --web-component
+</code></pre> <p>Ember will generate everything we need to get started quickly with our new component. When it’s done installing, we’ll switch our development setup to focus only on the component:</p> <pre><code class=language-bash>$ <span class=hljs-built_in>cd</span> todo-list && ember server
+</code></pre> <p>Visit localhost:4200, and you’ll be greeted with this page:</p> <p><img alt="Hello Glimmer screenshot" src=/images/blog/glimmer/helloworld-2.png></p> <p>This is the default markup of our new component, which you can find at <code>todo-list/src/ui/components/todo-list/template.hbs</code>. Let’s turn it into something more “todo-list”-like!</p> <pre><code class=language-typescript><span class=hljs-comment>// src/ui/components/todo-list/component.ts</span>
+
+<span class=hljs-keyword>import</span> Component <span class=hljs-keyword>from</span> <span class=hljs-string>"@glimmer/component"</span>;
+
+<span class=hljs-keyword>export</span> <span class=hljs-keyword>default</span> <span class=hljs-keyword>class</span> TodoList <span class=hljs-keyword>extends</span> Component {
+
+  items = [
+    {
+      text: <span class=hljs-string>"Install Glimmer"</span>,
+      isDone: <span class=hljs-literal>false</span>,
+    },
+    {
+      text: <span class=hljs-string>"Build app"</span>,
+      isDone: <span class=hljs-literal>false</span>,
+    },
+    {
+      text: <span class=hljs-string>"Bro down"</span>,
+      isDone: <span class=hljs-literal>false</span>,
+    }
+  ];
+
+}
+</code></pre> <pre><code class=language-htmlbars><span class=hljs-comment>{{! src/ui/components/todo-list/template.hbs }}</span><span class=xml><span class=hljs-tag>&lt;<span class=hljs-name>div</span> <span class=hljs-attr>id</span>=<span class=hljs-string>"todo-app"</span>></span>
+
+  <span class=hljs-tag>&lt;<span class=hljs-name>ul</span>></span>
+    </span><span class=hljs-template-tag>{{#<span class=hljs-name><span class=hljs-builtin-name>each</span></span> items <span class=hljs-attr>key</span>=<span class=hljs-string>"@index"</span> <span class=hljs-keyword>as</span> |item|}}</span><span class=xml><span class=hljs-tag>&lt;<span class=hljs-name>li</span>></span>
+        </span><span class=hljs-template-variable>{{item.text}}</span><span class=xml><span class=hljs-tag>&lt;/<span class=hljs-name>li</span>></span>
+    </span><span class=hljs-template-tag>{{/<span class=hljs-name><span class=hljs-builtin-name>each</span></span>}}</span><span class=xml><span class=hljs-tag>&lt;/<span class=hljs-name>ul</span>></span>
+
+  <span class=hljs-tag>&lt;<span class=hljs-name>input</span>
+    <span class=hljs-attr>placeholder</span>=<span class=hljs-string>"New todo"</span>
+  /></span>
+
+  <span class=hljs-tag>&lt;<span class=hljs-name>button</span>></span>
+    Add item
+  <span class=hljs-tag>&lt;/<span class=hljs-name>button</span>></span>
+
+<span class=hljs-tag>&lt;/<span class=hljs-name>div</span>></span></span></code></pre> <p><img alt="Todo app screenshot 1" src=/images/blog/glimmer/todo-1.png></p> <p>There we go! I personally really like Handlebars syntax since it makes it clear where the regular HTML ends and where Glimmer takes over. (compare that to Angular’s <code>&lt;ul *ngFor="item in items"></code> or Vue’s <code>&lt;li v-for="item in items"></code>).</p> <p>Next, we want each item in our list to be rendered into its own <code>todo-item</code> component. Staying inside our <code>todo-list</code> folder, we generate a new Glimmer component in our existing project:</p> <pre><code class=language-bash>$ ember g glimmer-component todo-item
+</code></pre> <p>We can now update our <code>todo-list/template.hbs</code> so that it uses this new component for every list item instead:</p> <pre><code class=language-htmlbars><span class=hljs-template-tag>{{#<span class=hljs-name><span class=hljs-builtin-name>each</span></span> items <span class=hljs-attr>key</span>=<span class=hljs-string>"@index"</span> <span class=hljs-keyword>as</span> |item|}}</span><span class=xml><span class=hljs-tag>&lt;<span class=hljs-name>todo-item</span>
+    @<span class=hljs-attr>item</span>=</span></span><span class=hljs-template-variable>{{item}}</span><span class=xml><span class=hljs-tag>/></span>
+</span><span class=hljs-template-tag>{{/<span class=hljs-name><span class=hljs-builtin-name>each</span></span>}}</span><span class=xml></span></code></pre> <pre><code class=language-htmlbars><span class=hljs-comment>{{! src/ui/components/todo-item/template.hbs }}</span><span class=xml><span class=hljs-tag>&lt;<span class=hljs-name>li</span>></span>
+  <span class=hljs-tag>&lt;<span class=hljs-name>p</span>></span>
+    {{@item.text}}
+  <span class=hljs-tag>&lt;/<span class=hljs-name>p</span>></span>
+
+  <span class=hljs-tag>&lt;<span class=hljs-name>button</span>></span>
+    Delete item
+  <span class=hljs-tag>&lt;/<span class=hljs-name>button</span>></span>
+<span class=hljs-tag>&lt;/<span class=hljs-name>li</span>></span></span></code></pre> <p>Notice how Glimmer uses @ to distinguish between arguments (props) and regular HTML attributes when you invoke the component. That’s another feature I really like, not just because of the elegant syntax, but also because it circumvents the problem of having to manually <a href=https://github.com/facebook/react/pull/6243>whitelist attributes</a> in the library.</p> <p><img alt="Todo app screenshot 2" src=/images/blog/glimmer/todo-2.png></p> <p>So far, so good. Now let’s add some functionality!</p> <p>We’ll start with the ability to add items to the list. For this, we first need to import the <code>tracked</code> decorator, so that we can specify which properties are allowed to change (Glimmer distinguishes between mutable and immutable properties to improve performance). We’ll use this decorator on <code>items</code> and on the newly defined <code>newItemText</code> property:</p> <pre><code class=language-typescript><span class=hljs-comment>// src/ui/components/todo-list/component.ts</span>
+<span class=hljs-keyword>import</span> Component, { tracked } <span class=hljs-keyword>from</span> <span class=hljs-string>"@glimmer/component"</span>;
+<span class=hljs-keyword>export</span> <span class=hljs-keyword>default</span> <span class=hljs-keyword>class</span> TodoList <span class=hljs-keyword>extends</span> Component {
+  <span class=hljs-meta>@tracked</span> newItemText = <span class=hljs-string>''</span>;
+  <span class=hljs-meta>@tracked</span> items = [
+    {
+      text: <span class=hljs-string>"Install Glimmer"</span>,
+      isDone: <span class=hljs-literal>false</span>,
+    },
+    <span class=hljs-comment>// ...</span></code></pre> <p>We proceed by binding some events to our <code>input</code> and <code>button</code> tags. This way we can update <code>newItemText</code> whenever the user types, and add a new item to the list when the button is clicked. For those of you that are familiar with Redux, you’ll recognise the way we use the immutable spread syntax for this:</p> <pre><code class=language-htmlbars><span class=hljs-comment>{{! src/ui/components/todo-list/template.hbs }}</span><span class=xml><span class=hljs-tag>&lt;<span class=hljs-name>div</span> <span class=hljs-attr>id</span>=<span class=hljs-string>"todo-app"</span>></span>
+
+  <span class=hljs-tag>&lt;<span class=hljs-name>ul</span>></span>
+    </span><span class=hljs-template-tag>{{#<span class=hljs-name><span class=hljs-builtin-name>each</span></span> items <span class=hljs-attr>key</span>=<span class=hljs-string>"@index"</span> <span class=hljs-keyword>as</span> |item|}}</span><span class=xml><span class=hljs-tag>&lt;<span class=hljs-name>todo-item</span>
+        @<span class=hljs-attr>item</span>=</span></span><span class=hljs-template-variable>{{item}}</span><span class=xml><span class=hljs-tag>/></span>
+    </span><span class=hljs-template-tag>{{/<span class=hljs-name><span class=hljs-builtin-name>each</span></span>}}</span><span class=xml><span class=hljs-tag>&lt;/<span class=hljs-name>ul</span>></span>
+
+  <span class=hljs-tag>&lt;<span class=hljs-name>input</span>
+    <span class=hljs-attr>placeholder</span>=<span class=hljs-string>"New todo"</span>
+    <span class=hljs-attr>value</span>=</span></span><span class=hljs-template-variable>{{newItemText}}</span><span class=xml><span class=hljs-tag><span class=hljs-attr>onkeyup</span>=</span></span><span class=hljs-template-variable>{{<span class=hljs-built_in>action</span> updateNewItemText}}</span><span class=xml><span class=hljs-tag>/></span>
+
+  <span class=hljs-tag>&lt;<span class=hljs-name>button</span> <span class=hljs-attr>onclick</span>=</span></span><span class=hljs-template-variable>{{<span class=hljs-built_in>action</span> addItem}}</span><span class=xml><span class=hljs-tag>></span>
+    Add item
+  <span class=hljs-tag>&lt;/<span class=hljs-name>button</span>></span>
+
+<span class=hljs-tag>&lt;/<span class=hljs-name>div</span>></span></span></code></pre> <pre><code class=language-typescript><span class=hljs-comment>// src/ui/components/todo-list/component.ts</span>
+
+<span class=hljs-keyword>import</span> Component, { tracked } <span class=hljs-keyword>from</span> <span class=hljs-string>"@glimmer/component"</span>;
+
+<span class=hljs-keyword>export</span> <span class=hljs-keyword>default</span> <span class=hljs-keyword>class</span> TodoList <span class=hljs-keyword>extends</span> Component {
+
+  <span class=hljs-meta>@tracked</span> newItemText = <span class=hljs-string>''</span>;
+
+  <span class=hljs-meta>@tracked</span> items = [
+    {
+      text: <span class=hljs-string>"Install Glimmer"</span>,
+      isDone: <span class=hljs-literal>false</span>,
+    },
+    {
+      text: <span class=hljs-string>"Build app"</span>,
+      isDone: <span class=hljs-literal>false</span>,
+    },
+    {
+      text: <span class=hljs-string>"Bro down"</span>,
+      isDone: <span class=hljs-literal>false</span>,
+    }
+  ];
+
+  updateNewItemText(e) {
+    <span class=hljs-keyword>this</span>.newItemText = e.target.value;
+  }
+
+  addItem() {
+    <span class=hljs-keyword>if</span> (!<span class=hljs-keyword>this</span>.newItemText) <span class=hljs-keyword>return</span> <span class=hljs-literal>false</span>;
+
+    <span class=hljs-keyword>let</span> items = [
+      ...this.items,
+      {
+        text: <span class=hljs-keyword>this</span>.newItemText,
+        isDone: <span class=hljs-literal>false</span>,
+      },
+    ];
+
+    <span class=hljs-keyword>this</span>.items = items;
+    <span class=hljs-keyword>this</span>.newItemText = <span class=hljs-string>''</span>;
+  }
+
+}
+</code></pre> <p><img alt="Todo app screenshot 3" src=/images/blog/glimmer/todo-3.gif> <em>It works!</em></p> <p>We also want to remove an item when the user clicks on “Delete item”, and cross it out when they click on the text. To accomplish this, we need some event handlers on <code>todo-item</code> which will trigger actions up to the <code>todo-list</code> (following Ember’s “Data Down, Actions Up” convention).</p> <pre><code class=language-htmlbars><span class=hljs-comment>{{! src/ui/components/todo-item/template.hbs }}</span><span class=xml><span class=hljs-tag>&lt;<span class=hljs-name>li</span>></span>
+  <span class=hljs-tag>&lt;<span class=hljs-name>p</span>
+    <span class=hljs-attr>data-checked</span>=<span class=hljs-string>{{@item.isDone}}</span>
+    <span class=hljs-attr>onclick</span>=</span></span><span class=hljs-template-variable>{{<span class=hljs-built_in>action</span> @toggleItem @item}}</span><span class=xml><span class=hljs-tag>></span>
+    {{@item.text}}
+  <span class=hljs-tag>&lt;/<span class=hljs-name>p</span>></span>
+
+  <span class=hljs-tag>&lt;<span class=hljs-name>button</span> <span class=hljs-attr>onclick</span>=</span></span><span class=hljs-template-variable>{{<span class=hljs-built_in>action</span> @deleteItem @item}}</span><span class=xml><span class=hljs-tag>></span>
+    Delete item
+  <span class=hljs-tag>&lt;/<span class=hljs-name>button</span>></span>
+<span class=hljs-tag>&lt;/<span class=hljs-name>li</span>></span></span></code></pre> <pre><code class=language-htmlbars><span class=hljs-comment>{{! src/ui/components/todo-list/template.hbs }}</span><span class=xml><span class=hljs-tag>&lt;<span class=hljs-name>div</span> <span class=hljs-attr>id</span>=<span class=hljs-string>"todo-app"</span>></span>
+
+  <span class=hljs-tag>&lt;<span class=hljs-name>ul</span>></span>
+    </span><span class=hljs-template-tag>{{#<span class=hljs-name><span class=hljs-builtin-name>each</span></span> items <span class=hljs-attr>key</span>=<span class=hljs-string>"@index"</span> <span class=hljs-keyword>as</span> |item|}}</span><span class=xml><span class=hljs-tag>&lt;<span class=hljs-name>todo-item</span>
+        @<span class=hljs-attr>item</span>=</span></span><span class=hljs-template-variable>{{item}}</span><span class=xml><span class=hljs-tag>@<span class=hljs-attr>deleteItem</span>=</span></span><span class=hljs-template-variable>{{<span class=hljs-built_in>action</span> deleteItem}}</span><span class=xml><span class=hljs-tag>@<span class=hljs-attr>toggleItem</span>=</span></span><span class=hljs-template-variable>{{<span class=hljs-built_in>action</span> toggleItem}}</span><span class=xml><span class=hljs-tag>/></span>
+    </span><span class=hljs-template-tag>{{/<span class=hljs-name><span class=hljs-builtin-name>each</span></span>}}</span><span class=xml><span class=hljs-tag>&lt;/<span class=hljs-name>ul</span>></span>
+
+  <span class=hljs-tag>&lt;<span class=hljs-name>input</span>
+    <span class=hljs-attr>placeholder</span>=<span class=hljs-string>"New todo"</span>
+    <span class=hljs-attr>value</span>=</span></span><span class=hljs-template-variable>{{newItemText}}</span><span class=xml><span class=hljs-tag><span class=hljs-attr>onkeyup</span>=</span></span><span class=hljs-template-variable>{{<span class=hljs-built_in>action</span> updateNewItemText}}</span><span class=xml><span class=hljs-tag>/></span>
+
+  <span class=hljs-tag>&lt;<span class=hljs-name>button</span> <span class=hljs-attr>onclick</span>=</span></span><span class=hljs-template-variable>{{<span class=hljs-built_in>action</span> addItem}}</span><span class=xml><span class=hljs-tag>></span>
+    Add item
+  <span class=hljs-tag>&lt;/<span class=hljs-name>button</span>></span>
+
+<span class=hljs-tag>&lt;/<span class=hljs-name>div</span>></span></span></code></pre> <pre><code class=language-typescript><span class=hljs-comment>// src/ui/components/todo-list/component.ts</span>
+
+<span class=hljs-keyword>import</span> Component, { tracked } <span class=hljs-keyword>from</span> <span class=hljs-string>"@glimmer/component"</span>;
+
+<span class=hljs-keyword>export</span> <span class=hljs-keyword>default</span> <span class=hljs-keyword>class</span> TodoList <span class=hljs-keyword>extends</span> Component {
+
+  <span class=hljs-meta>@tracked</span> newItemText = <span class=hljs-string>''</span>;
+
+  <span class=hljs-meta>@tracked</span> items = [
+    {
+      text: <span class=hljs-string>"Install Glimmer"</span>,
+      isDone: <span class=hljs-literal>false</span>,
+    },
+    {
+      text: <span class=hljs-string>"Build app"</span>,
+      isDone: <span class=hljs-literal>false</span>,
+    },
+    {
+      text: <span class=hljs-string>"Bro down"</span>,
+      isDone: <span class=hljs-literal>false</span>,
+    }
+  ];
+
+  updateNewItemText(e) {
+    <span class=hljs-keyword>this</span>.newItemText = e.target.value;
+  }
+
+  addItem() {
+    <span class=hljs-keyword>if</span> (!<span class=hljs-keyword>this</span>.newItemText) <span class=hljs-keyword>return</span> <span class=hljs-literal>false</span>;
+
+    <span class=hljs-keyword>let</span> items = [
+      ...this.items,
+      {
+        text: <span class=hljs-keyword>this</span>.newItemText,
+        isDone: <span class=hljs-literal>false</span>,
+      },
+    ];
+
+    <span class=hljs-keyword>this</span>.items = items;
+    <span class=hljs-keyword>this</span>.newItemText = <span class=hljs-string>''</span>;
+  }
+
+  deleteItem(removedItem) {
+    <span class=hljs-keyword>let</span> items = <span class=hljs-keyword>this</span>.items.filter(<span class=hljs-function><span class=hljs-params>item</span> =></span> {
+      <span class=hljs-keyword>return</span> item.text !== removedItem.text;
+    });
+
+    <span class=hljs-keyword>this</span>.items = items;
+  }
+
+  toggleItem(toggledItem) {
+    <span class=hljs-keyword>let</span> items = <span class=hljs-keyword>this</span>.items.map(<span class=hljs-function><span class=hljs-params>item</span> =></span> {
+      <span class=hljs-keyword>if</span> (item.text === toggledItem.text) {
+        <span class=hljs-keyword>return</span> <span class=hljs-built_in>Object</span>.assign(item, {
+          isDone: !item.isDone,
+        });
+      } <span class=hljs-keyword>else</span> {
+        <span class=hljs-keyword>return</span> item;
+      }
+    });
+
+    <span class=hljs-keyword>this</span>.items = items;
+  }
+
+}
+</code></pre> <p>Again, the technique we use for updating the data here is pretty similar to Redux’s way of doing things.</p> <p>You should now be able to <em>add items</em>, <em>delete them</em> and <em>toggle the “crossing out”</em> (although you won’t see any UI change when toggling them yet).</p> <p>For the grand finale, let’s add some CSS to all this! You’ll notice that Glimmer projects come with an <code>app.scss</code> file, so that you can take advantage of the SASS preprocessor instantly without any extra setup. Simply copy-paste the following into your <code>app.scss</code>:</p> <pre><code class=language-scss><span class=hljs-selector-id>#todo-app</span> {
+  <span class=hljs-attribute>font-family</span>: <span class=hljs-string>"Helvetica Neue"</span>, Helvetica, Arial, sans-serif;
+  <span class=hljs-attribute>margin</span>: <span class=hljs-number>60px</span> auto;
+  <span class=hljs-attribute>max-width</span>: <span class=hljs-number>320px</span>;
+  <span class=hljs-attribute>padding</span>: <span class=hljs-number>38px</span>;
+  <span class=hljs-attribute>font-size</span>: <span class=hljs-number>16px</span>;
+  <span class=hljs-attribute>color</span>: rgba(<span class=hljs-number>0</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0.8</span>);
+  <span class=hljs-attribute>box-shadow</span>:
+    /* The top layer shadow */
+    <span class=hljs-number>0px</span> <span class=hljs-number>1px</span> <span class=hljs-number>2px</span> rgba(<span class=hljs-number>0</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0.18</span>),
+    <span class=hljs-number>0px</span> <span class=hljs-number>1px</span> <span class=hljs-number>10px</span> rgba(<span class=hljs-number>0</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0.15</span>),
+    /* The second layer */
+    <span class=hljs-number>0</span> <span class=hljs-number>10px</span> <span class=hljs-number>0</span> -<span class=hljs-number>5px</span> <span class=hljs-number>#eee</span>,
+    /* The second layer shadow */
+    <span class=hljs-number>0</span> <span class=hljs-number>10px</span> <span class=hljs-number>1px</span> -<span class=hljs-number>4px</span> rgba(<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>0.15</span>),
+     /* The third layer */
+    <span class=hljs-number>0</span> <span class=hljs-number>20px</span> <span class=hljs-number>0</span> -<span class=hljs-number>10px</span> <span class=hljs-number>#eee</span>,
+    /* The third layer shadow */
+    <span class=hljs-number>0</span> <span class=hljs-number>20px</span> <span class=hljs-number>1px</span> -<span class=hljs-number>9px</span> rgba(<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>0.15</span>);
+    <span class=hljs-comment>/* Padding for demo purposes */</span>
+    <span class=hljs-attribute>padding</span>: <span class=hljs-number>30px</span>;
+
+  <span class=hljs-selector-tag>ul</span> {
+    <span class=hljs-attribute>list-style-type</span>: none;
+    <span class=hljs-attribute>padding</span>: <span class=hljs-number>0</span>;
+    <span class=hljs-attribute>margin</span>: <span class=hljs-number>0</span>;
+    <span class=hljs-attribute>margin-bottom</span>: <span class=hljs-number>43px</span>;
+  }
+
+  <span class=hljs-selector-tag>li</span> {
+    <span class=hljs-attribute>margin</span>: <span class=hljs-number>26px</span> <span class=hljs-number>0</span>;
+
+    <span class=hljs-selector-tag>p</span> {
+      <span class=hljs-attribute>display</span>: inline;
+      <span class=hljs-attribute>cursor</span>: pointer;
+      <span class=hljs-attribute>position</span>: relative;
+      &<span class=hljs-selector-pseudo>::after</span> {
+        <span class=hljs-attribute>content</span>: <span class=hljs-string>""</span>;
+        <span class=hljs-attribute>position</span>: absolute;
+        <span class=hljs-attribute>left</span>: <span class=hljs-number>0</span>;
+        <span class=hljs-attribute>width</span>: <span class=hljs-number>100%</span>;
+        <span class=hljs-attribute>height</span>: <span class=hljs-number>2px</span>;
+        <span class=hljs-attribute>top</span>: <span class=hljs-number>10px</span>;
+        <span class=hljs-attribute>background-color</span>: rgb(<span class=hljs-number>45</span>, <span class=hljs-number>45</span>, <span class=hljs-number>45</span>);
+        <span class=hljs-attribute>width</span>: <span class=hljs-number>0%</span>;
+        <span class=hljs-attribute>transition</span>: width <span class=hljs-number>0.3s</span>;
+      }
+
+      &<span class=hljs-selector-pseudo>:hover</span>,
+      &<span class=hljs-selector-attr>[data-checked]</span> {
+        <span class=hljs-attribute>opacity</span>: <span class=hljs-number>0.5</span>;
+      }
+
+      &<span class=hljs-selector-attr>[data-checked]</span><span class=hljs-selector-pseudo>::after</span> {
+        <span class=hljs-attribute>width</span>: <span class=hljs-number>100%</span>;
+      }
+    }
+
+    <span class=hljs-selector-tag>button</span> {
+      <span class=hljs-attribute>margin-top</span>: -<span class=hljs-number>5px</span>;
+      <span class=hljs-attribute>background-color</span>: <span class=hljs-number>#de6b58</span>;
+      <span class=hljs-attribute>opacity</span>: <span class=hljs-number>0</span>;
+      <span class=hljs-attribute>transition</span>: opacity <span class=hljs-number>0.1s</span>;
+    }
+
+    &<span class=hljs-selector-pseudo>:hover</span> <span class=hljs-selector-tag>button</span> {
+      <span class=hljs-attribute>opacity</span>: <span class=hljs-number>0.5</span>;
+      &<span class=hljs-selector-pseudo>:hover</span> {
+        <span class=hljs-attribute>opacity</span>: <span class=hljs-number>1</span>;
+      }
+    }
+  }
+
+  <span class=hljs-selector-tag>button</span> {
+    <span class=hljs-attribute>border</span>: none;
+    <span class=hljs-attribute>border-radius</span>: <span class=hljs-number>2px</span>;
+    <span class=hljs-attribute>padding</span>: <span class=hljs-number>6px</span> <span class=hljs-number>8px</span>;
+    <span class=hljs-attribute>font-size</span>: <span class=hljs-number>14px</span>;
+    <span class=hljs-attribute>color</span>: white;
+    <span class=hljs-attribute>box-shadow</span>: <span class=hljs-number>0px</span> <span class=hljs-number>1px</span> <span class=hljs-number>3px</span> rgba(<span class=hljs-number>0</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0.08</span>);
+    <span class=hljs-attribute>cursor</span>: pointer;
+    <span class=hljs-attribute>transition</span>: box-shadow <span class=hljs-number>0.1s</span>, transform <span class=hljs-number>0.1s</span>;
+    <span class=hljs-attribute>float</span>: right;
+    &<span class=hljs-selector-pseudo>:hover</span> {
+      <span class=hljs-attribute>box-shadow</span>: <span class=hljs-number>0px</span> <span class=hljs-number>1px</span> <span class=hljs-number>5px</span> rgba(<span class=hljs-number>0</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0.15</span>);
+      <span class=hljs-attribute>transform</span>: scale(<span class=hljs-number>1.02</span>);
+    }
+    &<span class=hljs-selector-pseudo>:focus</span> {
+      <span class=hljs-attribute>outline</span>: none;
+    }
+  }
+
+  <span class=hljs-selector-tag>input</span> {
+    <span class=hljs-attribute>outline</span>: none;
+    <span class=hljs-attribute>border</span>: none;
+    <span class=hljs-attribute>border-bottom</span>: <span class=hljs-number>1px</span> solid rgba(<span class=hljs-number>0</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0.38</span>);
+    <span class=hljs-attribute>width</span>: calc(<span class=hljs-number>100%</span> - <span class=hljs-number>110px</span>);
+    <span class=hljs-attribute>font-size</span>: <span class=hljs-number>16px</span>;
+    <span class=hljs-attribute>padding</span>: <span class=hljs-number>5px</span> <span class=hljs-number>0px</span>;
+    &<span class=hljs-selector-pseudo>:focus</span> {
+      <span class=hljs-attribute>border-color</span>: rgba(<span class=hljs-number>21</span>, <span class=hljs-number>124</span>, <span class=hljs-number>230</span>, <span class=hljs-number>0.72</span>);
+    }
+
+    + <span class=hljs-selector-tag>button</span> {
+      <span class=hljs-attribute>width</span>: <span class=hljs-number>90px</span>;
+      <span class=hljs-attribute>margin-top</span>: <span class=hljs-number>2px</span>;
+      <span class=hljs-attribute>background-color</span>: <span class=hljs-number>#41daa1</span>;
+    }
+  }
+}
+</code></pre> <p><img alt="Todo app screenshot 4" src=/images/blog/glimmer/todo-4.png> <em>Now that’s much prettier!</em></p> <p>That’s it! Our component is done! The only thing left to do now is to import it into our static website so that we can use it outside of the Ember environment.</p> <p>This is also super easy since Ember CLI has already compiled the app for us. In the <code>todo-list</code> component’s <code>dist</code> folder, you’ll find both an <code>app.js</code> and an <code>app.css</code> file – they’re all you need to render your component!</p> <p>Go back to your static website and add references to these files (one script-tag and one link-tag). Then simply invoke the component with <code>&lt;todo-list /></code> right after your existing “Hello world” title:</p> <pre><code class=language-html><span class=hljs-comment>&lt;!-- index.html --></span>
+
+<span class=hljs-tag>&lt;<span class=hljs-name>html</span>></span>
+
+  <span class=hljs-tag>&lt;<span class=hljs-name>head</span>></span>
+    <span class=hljs-tag>&lt;<span class=hljs-name>title</span>></span>Todo app<span class=hljs-tag>&lt;/<span class=hljs-name>title</span>></span>
+    <span class=hljs-tag>&lt;<span class=hljs-name>link</span> <span class=hljs-attr>rel</span>=<span class=hljs-string>"stylesheet"</span> <span class=hljs-attr>href</span>=<span class=hljs-string>"components/todo-list/dist/app.css"</span> /></span>
+  <span class=hljs-tag>&lt;/<span class=hljs-name>head</span>></span>
+
+  <span class=hljs-tag>&lt;<span class=hljs-name>body</span>></span>
+    <span class=hljs-tag>&lt;<span class=hljs-name>h1</span>></span>Hello world!<span class=hljs-tag>&lt;/<span class=hljs-name>h1</span>></span>
+
+    <span class=hljs-tag>&lt;<span class=hljs-name>todo-list</span> /></span>
+
+    <span class=hljs-tag>&lt;<span class=hljs-name>script</span> <span class=hljs-attr>src</span>=<span class=hljs-string>"components/todo-list/dist/app.js"</span>></span><span class=hljs-tag>&lt;/<span class=hljs-name>script</span>></span>
+  <span class=hljs-tag>&lt;/<span class=hljs-name>body</span>></span>
+
+<span class=hljs-tag>&lt;/<span class=hljs-name>html</span>></span></code></pre> <p><img alt="Todo app screenshot 5" src=/images/blog/glimmer/todo-5.png> <em>Boom!</em></p> <p>Now that is <em>sweet</em>! It’s worth noting that our Glimmer component is currently built in “development” mode. By using <code>ember build ---environment=production</code> instead, I got <code>app.js</code> down to 34.18 KB gzipped, which is actually smaller than just React + React DOM by itself. Pretty impressive!</p> </div> <div class="svelte-rprbgk follow-box"><img alt="Tristan Edwards" src=/images/tristan.jpg class="svelte-rprbgk avatar"> <i>Don’t want to miss any future tutorials or updates on the things I’m building? <a href=https://twitter.com/t4t5 class=svelte-rprbgk target=_blank>Follow me on Twitter! </a></i></div> </div></div> <script>__SAPPER__={baseUrl:"",preloaded:[void 0,null,{}]};if('serviceWorker' in navigator)navigator.serviceWorker.register('/service-worker.js');(function(){try{eval("async function x(){}");var main="/client/client.789e8479.js"}catch(e){main="/client/legacy/client.2c314451.js"};var s=document.createElement("script");try{new Function("if(0)import('')")();s.src=main;s.type="module";s.crossOrigin="use-credentials";}catch(e){s.src="/client/shimport@1.0.1.js";s.setAttribute("data-main",main);}document.head.appendChild(s);}());</script> 
