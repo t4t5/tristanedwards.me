@@ -1,0 +1,98 @@
+---
+title: Announcing SweetAlert 2.0 🎉
+url: announcing-sweetalert-2-0
+cover: /images/blog/sweetalert/cover.png
+date: 2017-09-07
+desc: "SweetAlert is a little side project that I released in 2014 in order to help developers implement dialogs that don’t suck in their web apps. When I first released it, I had no expectations whatsoever, and frankly did it mostly to spice up my boring GitHub profile."
+---
+
+[SweetAlert](https://sweetalert.js.org) is a little side project that I released in 2014 in order to help developers implement dialogs that don’t suck in their web apps. When I first released it, I had no expectations whatsoever, and frankly did it mostly to spice up my boring GitHub profile.
+
+![SweetAlert 1.0 animation](/images/blog/sweetalert/1-0.gif)
+*The famous animation that caught a lot of people’s attention*
+
+Three years and over 16 000 GitHub stars later, SweetAlert is no longer a little pet project, but has grown to become an indispensable tool for thousands of websites all around the world.
+
+Things have changed dramatically in the JavaScript ecosystem since its first release however. Bower and templating languages no longer rule the world, and ES2015/ES2016/ES2017 is becoming mainstream. A major revamp of the library is long overdue.
+
+![SweetAlert Logo](/images/blog/sweetalert/logo.png)
+
+With SweetAlert 2.0, I hope that the library will continue to be useful for another 3 years. Not only has the library been rewritten from the ground up using [TypeScript](https://www.typescriptlang.org) and [PostCSS](https://github.com/postcss/postcss), but it also comes with some awesome new functionality.
+
+## So what's new?
+
+By far the most requested feature in the original library was the the ability to cutomise SweetAlerts with extra buttons and content. For this, I looked into the most common alerts used on major websites like Facebook and Pinterest for inspiration.
+
+<img src="/images/blog/sweetalert/alts.png" class="wide" alt="SweetAlert alternatives" />
+
+Rather than bloating the standard library with lots of app-specific options, SweetAlert 2.0 can render all of these thanks to its new `content` parameter, which lets you pass in a custom DOM node. This DOM node can be designed either from scratch in pure JavaScript, or with the help of one of your favourite rendering libraries, like React or Vue.
+
+```javascript
+// A React component...
+const List = () => (
+  <ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+  </ul>
+)
+
+// Render it as a DOM node...
+const wrapper = document.createElement()
+ReactDOM.render(<List />, wrapper)
+const listEl = wrapper.firstChild
+
+// And pass the DOM node to SweetAlert!
+swal({
+  text: "Here's a list:",
+  content: listEl,
+})
+```
+
+SweetAlert 2.0 is also completely *promise-based*. This means you can get some seriously cool flows, especially if you combine it with `async`+`await`.
+
+```javascript
+const deleteFile = async () => {
+  // Wait for the user to press a button...
+  const shouldDelete = await swal("Delete file?", "Are you sure that you want to delete this file?", "warning");
+
+  if (shouldDelete) {
+    // Code to actually delete file goes here
+    swal("Poof!", "Your file has been deleted!", "success");
+  }
+}
+```
+
+Overall, the API has been revamped to be as simple as possible and gracefully upgradeable. Take a look at this example of how you can change the number of buttons in an alert:
+
+```javascript
+// No buttons:
+swal({
+  text: "This modal has no buttons!",
+  buttons: false,
+});
+
+// 1 button:
+swal({
+  text: "Here’s a modal with one button!",
+  button: "Click me!",
+});
+
+// 2 buttons:
+swal({
+  text: "Two buttons…",
+  buttons: ["Cancel", "Click me!"],
+});
+
+// 3 buttons:
+swal({
+  text: "Even three buttons, each with their own promise value!",
+  buttons: {
+    cancel: "Cancel",
+    confirm: "Click me!",
+    hello: "Say hello!",
+  },
+});
+```
+
+There’s a lot more stuff packed in, but rather than go through it all here, I suggest you head over to the [shiny new SweetAlert website](https://sweetalert.js.org).
+A big thank you to [everyone who’s helped contribute](https://github.com/t4t5/sweetalert/graphs/contributors) to the library! Here’s to the next three years! 🍻

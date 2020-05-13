@@ -7,6 +7,9 @@ import { terser } from "rollup-plugin-terser"
 import config from "sapper/config/rollup.js"
 import pkg from "./package.json"
 import svelteSVG from "rollup-plugin-svelte-svg"
+import { mdsvex } from "mdsvex"
+import * as path from "path"
+import hljs from "highlight.js"
 
 const mode = process.env.NODE_ENV
 const dev = mode === "development"
@@ -30,13 +33,34 @@ export default {
         dev,
         hydratable: true,
         emitCss: true,
+        extensions: [".svelte", ".mdx"],
+        preprocess: mdsvex({
+          extension: ".mdx",
+          layout: path.join(__dirname, "./src/components/BlogLayout.svelte"),
+          // parser: md => md.use(SomePlugin), // you can add markdown-it plugins if the feeling takes you
+          // you can add markdown-it options here, html is always true
+          markdownOptions: {
+            typographer: true,
+            linkify: true,
+            highlight: (str, lang) => {
+              if (lang && hljs.getLanguage(lang)) {
+                try {
+                  return hljs.highlight(lang, str).value
+                } catch (err) {
+                  console.error(err)
+                }
+              }
+              return "" // use external default escaping
+            },
+          },
+        }),
       }),
       resolve({
         browser: true,
         dedupe: ["svelte"],
       }),
       commonjs(),
-      svelteSVG(),
+      svelteSVG({ dev }),
 
       legacy &&
         babel({
@@ -82,8 +106,29 @@ export default {
       svelte({
         generate: "ssr",
         dev,
+        extensions: [".svelte", ".mdx"],
+        preprocess: mdsvex({
+          extension: ".mdx",
+          layout: path.join(__dirname, "./src/components/BlogLayout.svelte"),
+          // parser: md => md.use(SomePlugin), // you can add markdown-it plugins if the feeling takes you
+          // you can add markdown-it options here, html is always true
+          markdownOptions: {
+            typographer: true,
+            linkify: true,
+            highlight: (str, lang) => {
+              if (lang && hljs.getLanguage(lang)) {
+                try {
+                  return hljs.highlight(lang, str).value
+                } catch (err) {
+                  console.error(err)
+                }
+              }
+              return "" // use external default escaping
+            },
+          },
+        }),
       }),
-      svelteSVG({ generate: "ssr" }),
+      svelteSVG({ dev, generate: "ssr" }),
       resolve({
         dedupe: ["svelte"],
       }),

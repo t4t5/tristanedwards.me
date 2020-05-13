@@ -1,0 +1,524 @@
+---
+title: Why I’m excited about GlimmerJS
+url: why-im-excited-about-glimmerjs
+cover: /images/blog/glimmer/cover.png
+date: 2017-04-03
+desc: "I’ve just come back from EmberConf in Portland, and besides getting to know the community and making some awesome new friends, the GlimmerJS announcement is what really caught my eye."
+---
+
+I’ve just come back from *EmberConf* in Portland, and besides getting to know the community and making some awesome new friends, the [GlimmerJS announcement](https://glimmerjs.com) is what really caught my eye.
+
+![Rowing Tomster](/images/blog/glimmer/rowing-tomster.png)
+
+Some of you might know that I’ve been a big fan of Ember for a long time. Like many others, I was initially put off by the high learning curve, until I eventually learned to embrace the framework’s conventions, and became a better developer in the process.
+
+Even though I’ve flirted with basically all other major web frameworks since then, I still choose Ember most of the time when I have to build an ambitious web application. And why wouldn’t I? The CLI is fantastic, the Glimmer engine is now fast, and getting server-side rendering is literally just an `ember install` away thanks to [FastBoot](https://ember-fastboot.com).
+
+Despite all this, it’s no secret that lighter libraries like Vue and React have stolen the show in recent years. Why? Well, in addition to introducing some awesome new concepts like the virtual DOM and a one-way data flow, React also made it significantly easier to migrate your existing Rails/Laravel/Django front-end piece by piece.
+
+This is crucial. Companies usually aren’t too keen on rewriting software from scratch, and Ember had no way of letting developers dip their feet into the water before diving in. Until now.
+
+![Bundle size of Octane compared to other frameworks](/images/blog/glimmer/bundlesize.png)
+*Bundle size of different libraries + frameworks (minified + gzipped). Based on my own independent research.*
+
+With GlimmerJS, you can finally get the benefits of Ember’s rendering engine and CLI, without having to buy into the whole ecosystem. The project is new, and therefore obviously still a little rough around the edges, but based on what I’ve seen so far, I’m impressed.
+
+> Enough talking, show me the code!
+
+Let’s see how we can spice up any traditional web application with some Glimmer components! I’m going to start off with an extremely simple website: no Babel, no ES6, just plain HTML with script tags and links to CSS.
+
+We’ll call our app `todo-app` since it’s going to contain a todo-list (yeah I know, not a very original concept…) If you ever get stuck while following along, you can check out the project’s [GitHub repo](https://github.com/t4t5/todoapp-glimmer).
+
+```bash
+$ mkdir todo-app && cd todo-app && touch index.html
+```
+
+Here's the inside of `index.html`:
+
+```html
+<html>
+ <head>
+   <title>Todo app</title>
+ </head>
+
+ <body>
+   <h1>Hello world!</h1>
+ </body>
+</html>
+```
+
+![Hello World screenshot](/images/blog/glimmer/helloworld-1.png)
+
+Alright, let’s create an interactive `todo-list` web component for this page! We’ll first create a `components` folder inside our project, where all our future Glimmer components will live:
+
+```bash
+$ mkdir components && cd components
+```
+
+Using the latest Ember CLI (installed globally with Yarn), we now simply run this command:
+
+```bash
+$ ember new todo-list -b @glimmer/blueprint --web-component
+```
+
+Ember will generate everything we need to get started quickly with our new component. When it’s done installing, we’ll switch our development setup to focus only on the component:
+
+```bash
+$ cd todo-list && ember server
+```
+
+Visit localhost:4200, and you’ll be greeted with this page:
+
+![Hello Glimmer screenshot](/images/blog/glimmer/helloworld-2.png)
+
+This is the default markup of our new component, which you can find at `todo-list/src/ui/components/todo-list/template.hbs`. Let’s turn it into something more “todo-list”-like!
+
+```typescript
+// src/ui/components/todo-list/component.ts
+
+import Component from "@glimmer/component";
+
+export default class TodoList extends Component {
+
+  items = [
+    {
+      text: "Install Glimmer",
+      isDone: false,
+    },
+    {
+      text: "Build app",
+      isDone: false,
+    },
+    {
+      text: "Bro down",
+      isDone: false,
+    }
+  ];
+
+}
+```
+
+```htmlbars
+{{! src/ui/components/todo-list/template.hbs }}
+
+<div id="todo-app">
+
+  <ul>
+    {{#each items key="@index" as |item|}}
+      <li>
+        {{item.text}}
+      </li>
+    {{/each}}
+  </ul>
+
+  <input
+    placeholder="New todo"
+  />
+
+  <button>
+    Add item
+  </button>
+
+</div>
+```
+
+![Todo app screenshot 1](/images/blog/glimmer/todo-1.png)
+
+There we go! I personally really like Handlebars syntax since it makes it clear where the regular HTML ends and where Glimmer takes over. (compare that to Angular’s `<ul *ngFor="item in items">` or Vue’s `<li v-for="item in items">`).
+
+Next, we want each item in our list to be rendered into its own `todo-item` component. Staying inside our `todo-list` folder, we generate a new Glimmer component in our existing project:
+
+```bash
+$ ember g glimmer-component todo-item
+```
+
+We can now update our `todo-list/template.hbs` so that it uses this new component for every list item instead:
+
+```htmlbars
+{{#each items key="@index" as |item|}}
+  <todo-item
+    @item={{item}}
+  />
+{{/each}}
+```
+
+```htmlbars
+{{! src/ui/components/todo-item/template.hbs }}
+
+<li>
+  <p>
+    {{@item.text}}
+  </p>
+
+  <button>
+    Delete item
+  </button>
+</li>
+```
+
+Notice how Glimmer uses @ to distinguish between arguments (props) and regular HTML attributes when you invoke the component. That’s another feature I really like, not just because of the elegant syntax, but also because it circumvents the problem of having to manually [whitelist attributes](https://github.com/facebook/react/pull/6243) in the library.
+
+![Todo app screenshot 2](/images/blog/glimmer/todo-2.png)
+
+So far, so good. Now let’s add some functionality!
+
+We’ll start with the ability to add items to the list. For this, we first need to import the `tracked` decorator, so that we can specify which properties are allowed to change (Glimmer distinguishes between mutable and immutable properties to improve performance). We’ll use this decorator on `items` and on the newly defined `newItemText` property:
+
+```typescript
+// src/ui/components/todo-list/component.ts
+import Component, { tracked } from "@glimmer/component";
+export default class TodoList extends Component {
+  @tracked newItemText = '';
+  @tracked items = [
+    {
+      text: "Install Glimmer",
+      isDone: false,
+    },
+    // ...
+```
+
+We proceed by binding some events to our `input` and `button` tags. This way we can update `newItemText` whenever the user types, and add a new item to the list when the button is clicked. For those of you that are familiar with Redux, you’ll recognise the way we use the immutable spread syntax for this:
+
+```htmlbars
+{{! src/ui/components/todo-list/template.hbs }}
+
+<div id="todo-app">
+
+  <ul>
+    {{#each items key="@index" as |item|}}
+      <todo-item
+        @item={{item}}
+      />
+    {{/each}}
+  </ul>
+
+  <input
+    placeholder="New todo"
+    value={{newItemText}}
+    onkeyup={{action updateNewItemText}}
+  />
+
+  <button onclick={{action addItem}}>
+    Add item
+  </button>
+
+</div>
+```
+
+```typescript
+// src/ui/components/todo-list/component.ts
+
+import Component, { tracked } from "@glimmer/component";
+
+export default class TodoList extends Component {
+
+  @tracked newItemText = '';
+
+  @tracked items = [
+    {
+      text: "Install Glimmer",
+      isDone: false,
+    },
+    {
+      text: "Build app",
+      isDone: false,
+    },
+    {
+      text: "Bro down",
+      isDone: false,
+    }
+  ];
+
+  updateNewItemText(e) {
+    this.newItemText = e.target.value;
+  }
+
+  addItem() {
+    if (!this.newItemText) return false;
+
+    let items = [
+      ...this.items,
+      {
+        text: this.newItemText,
+        isDone: false,
+      },
+    ];
+
+    this.items = items;
+    this.newItemText = '';
+  }
+
+}
+```
+
+![Todo app screenshot 3](/images/blog/glimmer/todo-3.gif)
+*It works!*
+
+We also want to remove an item when the user clicks on “Delete item”, and cross it out when they click on the text. To accomplish this, we need some event handlers on `todo-item` which will trigger actions up to the `todo-list` (following Ember’s “Data Down, Actions Up” convention).
+
+```htmlbars
+{{! src/ui/components/todo-item/template.hbs }}
+
+<li>
+  <p
+    data-checked={{@item.isDone}}
+    onclick={{action @toggleItem @item}}
+  >
+    {{@item.text}}
+  </p>
+
+  <button onclick={{action @deleteItem @item}}>
+    Delete item
+  </button>
+</li>
+```
+
+```htmlbars
+{{! src/ui/components/todo-list/template.hbs }}
+
+<div id="todo-app">
+
+  <ul>
+    {{#each items key="@index" as |item|}}
+      <todo-item
+        @item={{item}}
+        @deleteItem={{action deleteItem}}
+        @toggleItem={{action toggleItem}}
+      />
+    {{/each}}
+  </ul>
+
+  <input
+    placeholder="New todo"
+    value={{newItemText}}
+    onkeyup={{action updateNewItemText}}
+  />
+
+  <button onclick={{action addItem}}>
+    Add item
+  </button>
+
+</div>
+```
+
+```typescript
+// src/ui/components/todo-list/component.ts
+
+import Component, { tracked } from "@glimmer/component";
+
+export default class TodoList extends Component {
+
+  @tracked newItemText = '';
+
+  @tracked items = [
+    {
+      text: "Install Glimmer",
+      isDone: false,
+    },
+    {
+      text: "Build app",
+      isDone: false,
+    },
+    {
+      text: "Bro down",
+      isDone: false,
+    }
+  ];
+
+  updateNewItemText(e) {
+    this.newItemText = e.target.value;
+  }
+
+  addItem() {
+    if (!this.newItemText) return false;
+
+    let items = [
+      ...this.items,
+      {
+        text: this.newItemText,
+        isDone: false,
+      },
+    ];
+
+    this.items = items;
+    this.newItemText = '';
+  }
+
+  deleteItem(removedItem) {
+    let items = this.items.filter(item => {
+      return item.text !== removedItem.text;
+    });
+
+    this.items = items;
+  }
+
+  toggleItem(toggledItem) {
+    let items = this.items.map(item => {
+      if (item.text === toggledItem.text) {
+        return Object.assign(item, {
+          isDone: !item.isDone,
+        });
+      } else {
+        return item;
+      }
+    });
+
+    this.items = items;
+  }
+
+}
+```
+
+Again, the technique we use for updating the data here is pretty similar to Redux’s way of doing things.
+
+You should now be able to *add items*, *delete them* and *toggle the “crossing out”* (although you won’t see any UI change when toggling them yet).
+
+For the grand finale, let’s add some CSS to all this! You’ll notice that Glimmer projects come with an `app.scss` file, so that you can take advantage of the SASS preprocessor instantly without any extra setup. Simply copy-paste the following into your `app.scss`:
+
+```scss
+#todo-app {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 60px auto;
+  max-width: 320px;
+  padding: 38px;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.8);
+  box-shadow:
+    /* The top layer shadow */
+    0px 1px 2px rgba(0, 0, 0, 0.18),
+    0px 1px 10px rgba(0, 0, 0, 0.15),
+    /* The second layer */
+    0 10px 0 -5px #eee,
+    /* The second layer shadow */
+    0 10px 1px -4px rgba(0,0,0,0.15),
+     /* The third layer */
+    0 20px 0 -10px #eee,
+    /* The third layer shadow */
+    0 20px 1px -9px rgba(0,0,0,0.15);
+    /* Padding for demo purposes */
+    padding: 30px;
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 43px;
+  }
+
+  li {
+    margin: 26px 0;
+
+    p {
+      display: inline;
+      cursor: pointer;
+      position: relative;
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        top: 10px;
+        background-color: rgb(45, 45, 45);
+        width: 0%;
+        transition: width 0.3s;
+      }
+
+      &:hover,
+      &[data-checked] {
+        opacity: 0.5;
+      }
+
+      &[data-checked]::after {
+        width: 100%;
+      }
+    }
+
+    button {
+      margin-top: -5px;
+      background-color: #de6b58;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+
+    &:hover button {
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  button {
+    border: none;
+    border-radius: 2px;
+    padding: 6px 8px;
+    font-size: 14px;
+    color: white;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: box-shadow 0.1s, transform 0.1s;
+    float: right;
+    &:hover {
+      box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.15);
+      transform: scale(1.02);
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+
+  input {
+    outline: none;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.38);
+    width: calc(100% - 110px);
+    font-size: 16px;
+    padding: 5px 0px;
+    &:focus {
+      border-color: rgba(21, 124, 230, 0.72);
+    }
+
+    + button {
+      width: 90px;
+      margin-top: 2px;
+      background-color: #41daa1;
+    }
+  }
+}
+```
+
+![Todo app screenshot 4](/images/blog/glimmer/todo-4.png)
+*Now that’s much prettier!*
+
+That’s it! Our component is done! The only thing left to do now is to import it into our static website so that we can use it outside of the Ember environment.
+
+This is also super easy since Ember CLI has already compiled the app for us. In the `todo-list` component’s `dist` folder, you’ll find both an `app.js` and an `app.css` file – they’re all you need to render your component!
+
+Go back to your static website and add references to these files (one script-tag and one link-tag). Then simply invoke the component with `<todo-list />` right after your existing “Hello world” title:
+
+```html
+<!-- index.html -->
+
+<html>
+
+  <head>
+    <title>Todo app</title>
+    <link rel="stylesheet" href="components/todo-list/dist/app.css" />
+  </head>
+
+  <body>
+    <h1>Hello world!</h1>
+
+    <todo-list />
+
+    <script src="components/todo-list/dist/app.js"></script>
+  </body>
+
+</html>
+```
+
+![Todo app screenshot 5](/images/blog/glimmer/todo-5.png)
+*Boom!*
+
+Now that is *sweet*! It’s worth noting that our Glimmer component is currently built in “development” mode. By using `ember build ---environment=production` instead, I got `app.js` down to 34.18 KB gzipped, which is actually smaller than just React + React DOM by itself. Pretty impressive!
