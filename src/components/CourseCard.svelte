@@ -30,6 +30,7 @@
     cursor: pointer;
     position: relative;
     z-index: 10;
+    vertical-align: top;
     transition: box-shadow 0.2s, transform 0.2s;
   }
 

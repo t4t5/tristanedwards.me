@@ -8,6 +8,18 @@
   import Footer from "../components/Footer.svelte"
 </script>
 
+<svelte:head>
+  <meta
+    property="og:image"
+    content={`https://tristanedwards.me/images/social.jpg`} />
+
+  <title>Tristan Edwards | Designer & Developer</title>
+  <meta
+    name="description"
+    content="Portfolio of designer & developer Tristan Edwards" />
+
+</svelte:head>
+
 <Nav />
 <Top />
 <Codespace />
