@@ -61,6 +61,10 @@
       font-size: 14px;
     }
 
+    a {
+      margin: 0 15px;
+    }
+
     a[data-active="true"]::after {
       bottom: -5px;
     }
