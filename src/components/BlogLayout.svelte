@@ -10,6 +10,7 @@
   export let desc
 
   const formattedDate = moment(date).format("MMM D, YYYY")
+  const fullTitle = `${title} | Blog | Tristan Edwards`
 </script>
 
 <svelte:head>
@@ -20,7 +21,7 @@
 
   {#if !snippet}
     <!-- Primary Meta Tags -->
-    <title>{title}</title>
+    <title>{fullTitle}</title>
     <meta name="title" content={title} />
     <meta name="description" content={desc} />
 

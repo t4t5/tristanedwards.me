@@ -9,6 +9,10 @@
   const posts = [sweetalertPost, glimmerPost]
 </script>
 
+<svelte:head>
+  <title>Blog | Tristan Edwards</title>
+</svelte:head>
+
 <Nav dark activePage="blog" />
 
 {#each posts as post}

@@ -11,7 +11,7 @@
 <svelte:head>
   <meta
     property="og:image"
-    content={`https://tristanedwards.me/images/social.jpg`} />
+    content="https://tristanedwards.me/images/social.jpg" />
 
   <title>Tristan Edwards | Designer & Developer</title>
   <meta
