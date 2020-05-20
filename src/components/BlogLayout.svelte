@@ -11,6 +11,7 @@
 
   const formattedDate = moment(date).format("MMM D, YYYY")
   const fullTitle = `${title} | Blog | Tristan Edwards`
+  const coverUrl = `https://tristanedwards.me${cover}`
 </script>
 
 <svelte:head>
@@ -31,9 +32,7 @@
     <meta property="og:description" content={desc} />
 
     {#if cover}
-      <meta
-        property="og:image"
-        content={`https://tristanedwards.me/${cover}`} />
+      <meta property="og:image" content={coverUrl} />
     {/if}
 
     <!-- Twitter -->
@@ -42,9 +41,7 @@
     <meta property="twitter:description" content={desc} />
 
     {#if cover}
-      <meta
-        property="twitter:image"
-        content={`https://tristanedwards.me/${cover}`} />
+      <meta property="twitter:image" content={coverUrl} />
     {/if}
   {/if}
 </svelte:head>
