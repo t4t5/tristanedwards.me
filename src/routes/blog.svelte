@@ -5,8 +5,9 @@
 
   import { _metadata as sweetalertPost } from "./blog/announcing-sweetalert-2-0.mdx"
   import { _metadata as glimmerPost } from "./blog/why-im-excited-about-glimmerjs.mdx"
+  import { _metadata as electronPost } from "./blog/3-things-web-developers-should-know-when-building-electron-apps.mdx"
 
-  const posts = [sweetalertPost, glimmerPost]
+  const posts = [electronPost, sweetalertPost, glimmerPost]
 </script>
 
 <svelte:head>

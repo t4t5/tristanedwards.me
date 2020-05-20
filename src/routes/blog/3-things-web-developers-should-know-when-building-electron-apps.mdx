@@ -1,0 +1,83 @@
+---
+title: 3 Things Web Developers Should Know When Building Electron Apps
+url: 3-things-web-developers-should-know-when-building-electron-apps
+cover: /images/blog/electron/cover.jpg
+date: 2020-05-20
+desc: "Before I started working on Codespace, I had never really built anything in Electron. The only thing I knew was that apps like Slack and Notion were using it to create cross-platform desktop apps, and that everyone on Hacker News hated it because it consumes a lot of RAM. 🤷‍♀️"
+---
+
+Before I started working on [Codespace](https://codespace.app), I had never really built anything in Electron. The only thing I knew was that apps like Slack and Notion were using it to create cross-platform desktop apps, and that everyone on Hacker News hated it because it consumes a lot of RAM. 🤷‍♀️
+
+Even though I've built apps on the web for 10 years, it was quite a journey discovering all the quirks of Electron. Here are 3 small things I learned that can hopefully help out someone who's just getting started:
+
+## 1. Quitting logic is not trivial
+
+Quitting an app is easy right? Surely there's just some built-in behaviour that handles all of that for us? Wrong. Although you might not think about it as a user, when you start developing native apps, you realise that there's often no "one-size-fits-all" for how and when apps should quit – it all depends on their use case.
+
+For starters, the *default behaviour* is different based on what OS you're using. On Windows and Linux, users have been taught that "closing the window also quits the app". On macOS however, that is not the case: clicking the red traffic light button merely closes the window, but the app itself usually stays in the dock and keeps running in the background until you actively choose to quit it.
+
+The difference is also not just based on the user's OS, it also varies across apps themselves. Most apps are happy with the default OS behaviour, but some applications like 1Password will quit as soon as you close the window for security reasons. More commonly, there are cases where you want to make it *appear* as if the app has been quit, but in reality you're simply *hiding the dock icon* while the app keeps running in the background. This is typically the case for apps that appear in your menu bar as soon as you turn on your computer.
+
+![Quitting in Chrome](/images/blog/electron/chrome-quit.png)
+*Some apps like Google Chrome go even further and ask you to hold down cmd + Q to quit.*
+
+So to sum it up – think about how and when your app should quit. To help you out, here are some snippets of logic that you can use in your own app:
+
+```javascript
+// Hide window instead of quitting when closing it:
+
+win = new BrowserWindow({ width: 500, height: 500 })
+
+win.on('close', e => {
+  e.preventDefault() // Prevents quit
+  win.hide()
+})
+```
+
+```javascript
+// Quit app on macOS ONLY if using command + Q or some other force quit option:
+
+win = new BrowserWindow({ width: 500, height: 500 })
+
+let forceQuit = false
+
+// Triggered before close event, i.e. when pressing command + Q
+app.on('before-quit', () => {
+  forceQuit = true
+})
+
+win.on('close', e => {
+  if (!forceQuit && process.platform === 'darwin') { // "darwin" is macOS
+    e.preventDefault() // Prevents quit
+    win.hide()
+  }
+
+  // Let the app quit normally...
+})
+```
+
+## 2. Write *thrice*, run everywhere
+
+One of the expectations developers might initially have when building apps with Electron is that you can happily hack around on your Mac, make sure it runs there, and then ship the code assuming that it will work just as well on Windows and Linux.
+
+Woah, not so fast, cowboy! Again, there are some core differences in how the OS works, and you definitely need to test your app extensively on all three platforms if you're going to market it as a cross-platform app. We've already talked about quitting logic, but here are some other examples of often overlooked quirks that you need to think about:
+
+- Short commands are different. Mac users are used to "⌘ + *key*" to trigger an action within an app, whereas Linux and Windows users use "CTRL + *key*".
+- Scrollbar visibility. If you're a web designer, you probably already know the pain of shipping a website that looks great on your Mac, only to find that, when you open it on Windows, there are these horrible-looking scrollbars everywhere. Electron apps are no different, so you will probably want to [style your scrollbars](https://css-tricks.com/the-current-state-of-styling-scrollbars/).
+- Differences in layouts and menus. Most well-designed apps will use so-called "frameless" styling, to avoid having an ugly grey bar on top of their app's window. This is trivial to achieve in Electron, using `BrowserWindow({ frame: false })`, however, you'll most likely want to tweak your layout slightly for each platform after setting it. Below is an example of how I had to add some top padding – but *only* to the macOS version of Codespace – in order to take into account the area occupied by the traffic lights:
+
+![Top padding on macOS](/images/blog/electron/top-padding.png)
+
+This is of course not everything, there are also differences when it comes to installation, auto-updates, emoji support... etc. In short, you *need* to test your app on all three platforms. I personally found that paying for something like [Parallels Desktop](https://www.parallels.com/products/desktop/) was probably the best investment I ever made while building my app. There are also free alternatives like [VirtualBox](https://www.virtualbox.org/), but from what I understand, there's a considerable difference in performance, which could affect your developer happiness.
+
+## 3. You don't need the App Store
+
+As web developers, we're used to deploying our sites to a server and have them live instantly, but as we know, native apps work a bit differently. One of the dilemmas I faced when Codespace was getting close to launching was whether to use the Mac App Store or not. After all, it's an extra distribution channel that might bring in some more customers, but I was also nervous about unwarranted app rejections and the [various stories of Electron apps being booted from the store](https://9to5mac.com/2019/11/04/electron-app-rejections/). On top of that, 30% is a pretty hefty fee for what Apple is providing if you ask me.
+
+In the end, I decided to distribute the app myself, and I haven't regretted it one bit. Sure, it's a little bit of extra work setting up your own payment and licensing system, but if you're going cross-platform, you will have to do that anyway. It also pushed me to take 100% control of the marketing of the app, and I discovered that spending some extra time creating a nice-looking landing page is more likely to yield great results than just uploading some screenshots to the store.
+
+In short, if your app is cross-platform, I don't see any great benefit to using the App Store as your main distribution channel. Skipping it also frees you from going through a potentially long review process every time you push an update to your app. You will however still need to pay for an Apple Developer Account in order to sign and notarise your app, otherwise it won't run on anyone else's Mac (more on this in a later blog post).
+
+---
+
+I hope you enjoyed reading and learned something new! I will most likely keep posting tutorials on how to build things with Electron, so make sure you [follow me on Twitter](https://twitter.com/t4t5) so that you don't miss anything!
