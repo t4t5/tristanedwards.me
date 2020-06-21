@@ -1,7 +1,7 @@
 <footer>
   <div class="avatar" />
 
-  <a href="mailto:tristan.edwards@me.com">Email me</a>
+  <a href="mailto:edwards@hey.com">Email me</a>
 </footer>
 
 <style>
