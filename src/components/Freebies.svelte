@@ -3,6 +3,7 @@
   import SweetAlert from "../icons/sweetalert.svg"
   import Ether from "../icons/ether.svg"
   import EmberSparks from "../icons/ember_sparks.svg"
+  import SocialBubble from "../icons/socialbubble.svg"
 
   import FreebieCard from "./FreebieCard.svelte"
 </script>
@@ -11,6 +12,10 @@
   <HeartIcon width="22" height="20" />
 
   <p>I also do a lot of side projects, freebies and open-source work</p>
+
+  <FreebieCard href="https://socialbubble.so" color="rgba(231,236,240,0.70)">
+    <SocialBubble width="239" height="60" />
+  </FreebieCard>
 
   <FreebieCard href="https://sweetalert.js.org" color="rgba(243,130,112,0.08)">
     <SweetAlert width="220" height="49" />
